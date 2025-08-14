@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Menú Principal";
+    string? rol = Context.Session.GetString("rol");
+    string? usuario = Context.Session.GetString("username");
+}
+
+<h2>Bienvenido, @usuario</h2>
+<h4>Rol: @rol</h4>
+
+@if (rol == "Administrador")
+{
+    <ul>
+        <li><a href="#">Gestionar Pacientes</a></li>
+        <li><a href="#">Gestionar Médicos</a></li>
+        <li><a href="#">Gestionar Usuarios</a></li>
+    </ul>
+}
+else if (rol == "Médico")
+{
+    <ul>
+        <li><a href="#">Ver Mis Citas</a></li>
+        <li><a href="#">Registrar Diagnóstico</a></li>
+    </ul>
+}
+else if (rol == "Paciente")
+{
+    <ul>
+        <li><a href="#">Mis Citas</a></li>
+        <li><a href="#">Mi Perfil</a></li>
+    </ul>
+}

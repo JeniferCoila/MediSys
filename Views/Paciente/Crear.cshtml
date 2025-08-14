@@ -1,0 +1,85 @@
+﻿@model AplicacionCitasMedicasDB.Models.Paciente
+@{
+    ViewData["Title"] = "Nuevo Paciente";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Nuevo Paciente</h2>
+    <a asp-action="Listado" class="btn btn-outline-secondary">Volver al listado</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Crear" method="post" novalidate>
+            @* el tag helper agrega el antiforgery token automáticamente *@
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label asp-for="DNI" class="form-label"></label>
+                    <input asp-for="DNI" class="form-control" maxlength="10" placeholder="Ej. 12345678" autofocus />
+                    <span asp-validation-for="DNI" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Nombre" class="form-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-5">
+                    <label asp-for="Apellido" class="form-label"></label>
+                    <input asp-for="Apellido" class="form-control" />
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3 mb-3">
+                    <label asp-for="FechaNacimiento" class="control-label"></label>
+                    <input asp-for="FechaNacimiento"
+                           type="date"
+                           class="form-control"
+                           value="@(Model.FechaNacimiento.ToString("yyyy-MM-dd"))" />
+                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                </div>
+
+
+                <div class="col-md-3">
+                    <label asp-for="Genero" class="form-label"></label>
+                    <select asp-for="Genero" class="form-select">
+                        <option value="">-- Seleccione --</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </select>
+                    <span asp-validation-for="Genero" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="Telefono" class="form-label"></label>
+                    <input asp-for="Telefono" class="form-control" placeholder="Ej. 987654321" />
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Correo" class="form-label"></label>
+                    <input asp-for="Correo" type="email" class="form-control" placeholder="nombre@correo.com" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Direccion" class="form-label"></label>
+                    <input asp-for="Direccion" class="form-control" />
+                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a asp-action="Listado" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

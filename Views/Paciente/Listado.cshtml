@@ -1,0 +1,112 @@
+﻿@using System.Linq
+@model IEnumerable<AplicacionCitasMedicasDB.Models.Paciente>
+
+@{
+    ViewData["Title"] = "Listado de Pacientes";
+    var filtro = ViewBag.Filtro as string ?? "";
+    int paginaActual = ViewBag.PaginaActual ?? 1;
+    int totalPaginas = ViewBag.TotalPaginas ?? 1;
+    int totalRegistros = ViewBag.TotalRegistros ?? 0;
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="m-0">Pacientes</h2>
+    <a asp-action="Crear" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nuevo Paciente
+    </a>
+</div>
+
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" asp-action="Listado" class="row g-2">
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <input type="text" name="filtro" value="@filtro" class="form-control" placeholder="Buscar por Nombre o DNI" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-primary">Buscar</button>
+            </div>
+            <div class="col-auto">
+                <a asp-action="Listado" class="btn btn-outline-secondary">Limpiar</a>
+            </div>
+         
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().IdPaciente)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().DNI)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Nombre)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Apellido)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().FechaNacimiento)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Genero)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Telefono)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Correo)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Direccion)</th>
+                <th class="text-center" style="width: 190px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="10" class="text-center text-muted py-4">No se encontraron resultados</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IdPaciente</td>
+                        <td>@item.DNI</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Apellido</td>
+                        <td>@item.FechaNacimiento.ToString("yyyy-MM-dd")</td>
+                        <td>@(string.IsNullOrEmpty(item.Genero) ? "—" : (item.Genero == "M" ? "Masculino" : item.Genero == "F" ? "Femenino" : item.Genero))</td>
+                        <td>@item.Telefono</td>
+                        <td>@item.Correo</td>
+                        <td>@item.Direccion</td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2 flex-nowrap">
+                                <a asp-action="Detalle" asp-route-id="@item.IdPaciente"
+                                   class="btn btn-sm btn-outline-secondary">Detalles</a>
+
+                                <a asp-action="Editar" asp-route-id="@item.IdPaciente"
+                                   class="btn btn-sm btn-outline-primary">Editar</a>
+
+                                <form asp-action="Eliminar" method="post" class="d-inline" data-confirm="¿Eliminar paciente?">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.IdPaciente" />
+                                    <input type="hidden" name="filtro" value="@ViewBag.Filtro" />
+                                    <input type="hidden" name="page" value="@ViewBag.PaginaActual" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                </form>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+ <!-- llamar a vista parcial para reutlizar -->
+@{
+    ViewBag.PagerAction = "Listado";
+}
+
+@await Html.PartialAsync("_PagerWithTotal")

@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Menú del Médico";
+    var user = Context.Session.GetString("username");
+}
+
+<h2>Bienvenido, @user</h2>
+<h4>Panel de Médico</h4>
+
+<ul>
+    <li><a href="#">Ver Mis Citas</a></li>
+    <li><a href="#">Registrar Diagnóstico</a></li>
+</ul>

@@ -1,0 +1,46 @@
+﻿@{
+    int paginaActual = ViewBag.PaginaActual ?? 1;
+    int totalPaginas = ViewBag.TotalPaginas ?? 1;
+    int totalRegistros = ViewBag.TotalRegistros ?? 0;
+    string filtro = ViewBag.Filtro as string ?? "";
+    // para sobreescribir acción; por defecto usa actual
+    string actionName = ViewBag.PagerAction as string
+                         ?? (ViewContext.RouteData.Values["action"]?.ToString() ?? "Listado");
+}
+
+<div class="d-flex align-items-center justify-content-between mt-3">
+    @if (totalPaginas > 1)
+    {
+        <nav aria-label="Paginación">
+            <ul class="pagination mb-0">
+                <li class="page-item @(paginaActual == 1 ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-action="@actionName"
+                       asp-route-page="@(paginaActual - 1)"
+                       asp-route-filtro="@filtro">Anterior</a>
+                </li>
+
+                @for (int i = 1; i <= totalPaginas; i++)
+                {
+                    <li class="page-item @(i == paginaActual ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="@actionName"
+                           asp-route-page="@i"
+                           asp-route-filtro="@filtro">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(paginaActual == totalPaginas ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-action="@actionName"
+                       asp-route-page="@(paginaActual + 1)"
+                       asp-route-filtro="@filtro">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    }
+
+    <span class="badge bg-info text-dark ms-3" style="font-size: 18px;">
+        Total: @totalRegistros registros
+    </span>
+</div>

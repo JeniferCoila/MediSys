@@ -1,0 +1,66 @@
+﻿@model AplicacionCitasMedicasDB.Models.Paciente
+
+@{
+    ViewData["Title"] = "Detalles del Paciente";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Detalles del Paciente</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DNI)</dt>
+                <dd class="col-sm-9">@Model.DNI</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+                <dd class="col-sm-9">@Model.Nombre</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Apellido)</dt>
+                <dd class="col-sm-9">@Model.Apellido</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaNacimiento)</dt>
+                <dd class="col-sm-9">@Model.FechaNacimiento.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Genero)</dt>
+                <dd class="col-sm-9">
+                    @(Model.Genero == "M" ? "Masculino" :
+                        Model.Genero == "F" ? "Femenino" : "No especificado")
+                </dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefono)</dt>
+                <dd class="col-sm-9">@Model.Telefono</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Correo)</dt>
+                <dd class="col-sm-9">@Model.Correo</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Direccion)</dt>
+                <dd class="col-sm-9">@Model.Direccion</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaCreacion)</dt>
+                <dd class="col-sm-9">@Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaActualizacion)</dt>
+                <dd class="col-sm-9">
+                    @(Model.FechaActualizacion.HasValue
+                        ? Model.FechaActualizacion.Value.ToString("dd/MM/yyyy HH:mm")
+                        : "Nunca actualizado")
+                </dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaBaja)</dt>
+                <dd class="col-sm-9">
+                    @(Model.FechaBaja.HasValue
+                        ? Model.FechaBaja.Value.ToString("dd/MM/yyyy HH:mm")
+                        : "Activo")
+                </dd>
+
+
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-action="Listado" class="btn btn-secondary">Volver al Listado</a>
+            <a asp-action="Editar" asp-route-id="@Model.IdPaciente" class="btn btn-warning">Editar</a>
+        </div>
+    </div>
+</div>
