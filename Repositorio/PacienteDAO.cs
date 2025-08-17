@@ -50,6 +50,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
             { tr.Rollback(); return (0, $"Error: {ex.Message}"); }
         }
 
+        // - 
         public int Contar()
         {
             int total = 0;
@@ -95,11 +96,13 @@ namespace AplicacionCitasMedicasDB.Repositorio
             return mensaje;
         }
 
+        // -
         public IEnumerable<Paciente> GetAll()
         {
             return GetAll(""); // reutiliza método con filtro vacío
         }
 
+        // -
         public IEnumerable<Paciente> GetAll(string filtro)
         {
             List<Paciente> lista = new List<Paciente>();
