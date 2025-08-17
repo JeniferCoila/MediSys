@@ -1,4 +1,5 @@
-﻿@model IEnumerable<AplicacionCitasMedicasDB.Models.Medico>
+﻿@using System.Linq
+@model IEnumerable<AplicacionCitasMedicasDB.Models.Medico>
 
 @{
     ViewData["Title"] = "Listado de Médicos";
@@ -27,7 +28,8 @@
     <div class="card-body">
         <form method="get" asp-action="Listado" class="row g-2">
             <div class="col-sm-12 col-md-6 col-lg-4">
-                <input type="text" name="filtro" value="@filtro" class="form-control" placeholder="Buscar por Nombre, Apellido o Especialidad" />
+                <input type="text" name="filtro" value="@filtro" class="form-control"
+                       placeholder="Buscar por CMP, Nombre o Apellido" />
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-outline-primary">Buscar</button>
@@ -43,14 +45,14 @@
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
-                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().IdMedico)</th>
-                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().CMP)</th>
-                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Nombre)</th>
-                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Apellido)</th>
-                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().NombreEspecialidad)</th>
-                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Telefono)</th>
-                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Correo)</th>
-                <th class="text-center" style="width: 190px;">Acciones</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.IdMedico)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.CMP)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.Nombre)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.Apellido)</th>
+                <th>Especialidad</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.Telefono)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.Correo)</th>
+                <th class="text-center" style="width:190px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -65,13 +67,13 @@
                 foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(m => item.IdMedico)</td>
-                        <td>@Html.DisplayFor(m => item.CMP)</td>
-                        <td>@Html.DisplayFor(m => item.Nombre)</td>
-                        <td>@Html.DisplayFor(m => item.Apellido)</td>
-                        <td>@Html.DisplayFor(m => item.NombreEspecialidad)</td>
-                        <td>@Html.DisplayFor(m => item.Telefono)</td>
-                        <td>@Html.DisplayFor(m => item.Correo)</td>
+                        <td>@item.IdMedico</td>
+                        <td>@item.CMP</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Apellido</td>
+                        <td>@(string.IsNullOrWhiteSpace(item.NombreEspecialidad) ? "—" : item.NombreEspecialidad)</td>
+                        <td>@item.Telefono</td>
+                        <td>@item.Correo</td>
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2 flex-nowrap">
                                 <a asp-action="Detalle" asp-route-id="@item.IdMedico"
@@ -83,8 +85,8 @@
                                 <form asp-action="Eliminar" method="post" class="d-inline" data-confirm="¿Eliminar médico?">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@item.IdMedico" />
-                                    <input type="hidden" name="filtro" value="@ViewBag.Filtro" />
-                                    <input type="hidden" name="page" value="@ViewBag.PaginaActual" />
+                                    <input type="hidden" name="filtro" value="@filtro" />
+                                    <input type="hidden" name="page" value="@paginaActual" />
                                     <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
                                 </form>
                             </div>
@@ -96,7 +98,13 @@
     </table>
 </div>
 
-@{
-    ViewBag.PagerAction = "Listado";
-}
-@await Html.PartialAsync("_PagerWithTotal")
+<!-- llamar a vista parcial para reutlizar -->
+@await Html.PartialAsync("_PagerWithTotal", new
+    {
+        PaginaActual = ViewBag.PaginaActual,
+        TotalPaginas = ViewBag.TotalPaginas,
+        Action = "Listado",
+        RouteValues = new { filtro = (string)ViewBag.Filtro },
+        TotalRegistros = ViewBag.TotalRegistros
+    })
+

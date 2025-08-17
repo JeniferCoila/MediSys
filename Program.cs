@@ -8,6 +8,8 @@ builder.Services.AddSession();
 //Cuando necesite IUsuario dale una instancia de UsuarioDAO
 builder.Services.AddScoped<IUsuario, UsuarioDAO>();
 builder.Services.AddScoped<IPaciente, PacienteDAO>();
+builder.Services.AddScoped<IMedico, MedicoDAO>();
+builder.Services.AddScoped<IEspecialidad, EspecialidadDAO>();
 
 
 var app = builder.Build();

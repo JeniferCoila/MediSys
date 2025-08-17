@@ -1,6 +1,9 @@
 ﻿using AplicacionCitasMedicasDB.Models;
 using AplicacionCitasMedicasDB.Repositorio;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection;
 
 namespace AplicacionCitasMedicasDB.Controllers
 {
@@ -8,17 +11,16 @@ namespace AplicacionCitasMedicasDB.Controllers
     {
 
         private readonly IMedico _medicoDAO;
-        private readonly IEspecialidad _especialidadDAO;
-        private const int PageSize = 15;
+        private readonly IEspecialidad _espDAO;
 
-        public MedicoController(IMedico medicoDAO, IEspecialidad especialidadDAO)
+        public MedicoController(IMedico medicoDAO, IEspecialidad espDAO)
         {
             _medicoDAO = medicoDAO;
-            _especialidadDAO = especialidadDAO;
+            _espDAO = espDAO;
         }
 
 
-        /* -- MEDICO -- */
+        // ==== MENÚ PACIENTE ====
         public IActionResult Menu()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
@@ -27,73 +29,90 @@ namespace AplicacionCitasMedicasDB.Controllers
             return View();
         }
 
-        /* ----------- LISTADO ----------- */
+        // ==== LISTA + BÚSQUEDA + PAGINACIÓN ====
         [HttpGet]
         public async Task<IActionResult> Listado(string? filtro, int page = 1)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
                 return RedirectToAction("Index", "Login");
 
-            ViewBag.Filtro = filtro;
+            const int pageSize = 15;
 
-            var lista = await Task.Run(() => _medicoDAO.GetAll(filtro));
-            int total = lista.Count();
-            int totalPages = Math.Max(1, (int)Math.Ceiling(total / (double)PageSize));
-            page = Math.Clamp(page, 1, totalPages);
+            var medicos = await Task.Run(() => _medicoDAO.GetAll(filtro ?? string.Empty));
+            var ordered = medicos.OrderBy(m => m.IdMedico).ToList();
 
-            var medicosPagina = lista.Skip((page - 1) * PageSize).Take(PageSize).ToList();
+            int totalRegistros = ordered.Count;
+            int totalPaginas = (int)Math.Ceiling(totalRegistros / (double)pageSize);
+            if (totalPaginas == 0) totalPaginas = 1;
+            if (page < 1) page = 1;
+            if (page > totalPaginas) page = totalPaginas;
 
+            var pagina = ordered.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.Filtro = filtro ?? string.Empty;
             ViewBag.PaginaActual = page;
-            ViewBag.TotalPaginas = totalPages;
-            ViewBag.TotalRegistros = total;
-            ViewBag.PageSize = PageSize;
+            ViewBag.TotalPaginas = totalPaginas;
+            ViewBag.TotalRegistros = totalRegistros;
 
-            return View(medicosPagina);
+            return View(pagina);
         }
 
-        /* ----------- CREAR ----------- */
-        //Vista para crear un nuevo médico
+        private void CargarEspecialidades()
+        {
+            var lista = _espDAO.GetAll();
+            ViewBag.Especialidades = new SelectList(lista, "IdEspecialidad", "Nombre");
+        }
+
+        private void CargarEspecialidades(int? selectedId)
+        {
+            var lista = _espDAO.GetAll();
+            ViewBag.Especialidades = new SelectList(lista, "IdEspecialidad", "Nombre", selectedId);
+        }
+
+
         [HttpGet]
         public IActionResult Crear()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
                 return RedirectToAction("Index", "Login");
 
-
-            ViewBag.Especialidades = _especialidadDAO.GetAll();
-            return View(new Medico());
+            CargarEspecialidades();
+            return View();
         }
 
-        // Procesar el formulario de creacion
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(Medico medico)
         {
-            // ModelState.Remove(nameof(Medico.NombreEspecialidad));
+
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
+                return RedirectToAction("Index", "Login");
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Especialidades = _especialidadDAO.GetAll();
+                CargarEspecialidades();
                 return View(medico);
             }
+
             var result = await Task.Run(() => _medicoDAO.Add(medico));
 
             if (result.code == -1)
             {
-                ViewBag.Especialidades = _especialidadDAO.GetAll();
                 ModelState.AddModelError("CMP", result.message);
+                CargarEspecialidades();
                 return View(medico);
             }
             if (result.code == -2)
             {
-                ViewBag.Especialidades = _especialidadDAO.GetAll();
                 ModelState.AddModelError(string.Empty, result.message);
+                CargarEspecialidades();
                 return View(medico);
             }
             if (result.code != 1)
             {
-                ViewBag.Especialidades = _especialidadDAO.GetAll();
                 ModelState.AddModelError(string.Empty, result.message);
+                CargarEspecialidades();
                 return View(medico);
             }
 
@@ -103,7 +122,7 @@ namespace AplicacionCitasMedicasDB.Controllers
 
         }
 
-        /* ----------- EDITAR----------- */
+        // 
         [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {
@@ -111,74 +130,70 @@ namespace AplicacionCitasMedicasDB.Controllers
                 return RedirectToAction("Index", "Login");
 
             var medico = await Task.Run(() => _medicoDAO.Search(id));
-            if (medico == null)
-            {
-                return RedirectToAction(nameof(Listado));
-            }
-            ViewBag.Especialidades = _especialidadDAO.GetAll();
+            if (medico is null) return NotFound();
+
+            CargarEspecialidades(medico.IdEspecialidad);
             return View(medico);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EdItar(Medico medico)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Editar(Medico medico, string? filtro, int page = 1)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
+                return RedirectToAction("Index", "Login");
+
             if (!ModelState.IsValid)
             {
-                return View(medico);
-            }
-            var result = await Task.Run(() => _medicoDAO.Update(medico));
-            if (result.code == -1)
-            {
-                ModelState.AddModelError("CMP", result.message);
-                return View(medico);
-            }
-            if (result.code == -2)
-            {
-                ModelState.AddModelError(string.Empty, result.message);
-                return View(medico);
-            }
-            if (result.code != 1)
-            {
-                ModelState.AddModelError(string.Empty, result.message);
+                CargarEspecialidades(medico.IdEspecialidad);
                 return View(medico);
             }
 
-            TempData["mensaje"] = result.message;
-            return RedirectToAction(nameof(Listado));
+            var (code, message) = await Task.Run(() => _medicoDAO.Update(medico));
 
+            if (code != 1)
+            {
+                // Uniformidad con Pacientes:
+                if (code == -1) ModelState.AddModelError("CMP", message);       
+                else if (code == -2) ModelState.AddModelError(string.Empty, message); 
+                else ModelState.AddModelError(string.Empty, message);             
 
+                CargarEspecialidades(medico.IdEspecialidad);
+                return View(medico);
+            }
+
+            TempData["mensaje"] = message;
+            return RedirectToAction(nameof(Listado), new { filtro, page });
         }
 
-        /* ----------- DETALLE ----------- */
+
+        // GET:
         [HttpGet]
         public async Task<IActionResult> Detalle(int id)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
                 return RedirectToAction("Index", "Login");
-            Medico medico = await Task.Run(() => _medicoDAO.Search(id));
-            if (medico == null)
-            {
-                return NotFound();
-            }
-  
+
+            var medico = await Task.Run(() => _medicoDAO.Search(id));
+            if (medico == null) return NotFound();
 
             return View(medico);
         }
 
-        /* ----------- ELIMINAR ----------- */
+        // ===== ELIMINAR (BAJA LÓGICA) =====
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Eliminar(int id, string? filtro, int page = 1)
         {
-            Medico medico = await Task.Run(() => _medicoDAO.Search(id));
-            if (medico == null)
-            {
-                TempData["mensaje"] = "Médico no encontrado.";
-                return RedirectToAction(nameof(Listado));
-            }
-            var msg = await Task.Run(() => _medicoDAO.Delete(medico));
-            TempData["mensaje"] = msg;
-            return RedirectToAction(nameof(Listado), new { filtro, page });
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
+                return RedirectToAction("Index", "Login");
 
+            var msg = await Task.Run(() => _medicoDAO.Delete(new Medico { IdMedico = id }));
+            TempData["mensaje"] = msg;
+
+            // Volver al mismo filtro/página
+            return RedirectToAction(nameof(Listado), new { filtro, page });
         }
+
     }
 }

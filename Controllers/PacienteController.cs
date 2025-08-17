@@ -63,20 +63,7 @@ namespace AplicacionCitasMedicasDB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(Paciente paciente)
         {
-            /*
-            // Si viene vacía o menor al mínimo SQL, marca error
-            if (paciente.FechaNacimiento == default || paciente.FechaNacimiento < new DateTime(1753, 1, 1))
-            {
-                ModelState.AddModelError(nameof(paciente.FechaNacimiento),
-                    "Seleccione una fecha de nacimiento válida, es obligatorio");
-            }
-
-            if (!ModelState.IsValid) return View(paciente);
-
-            var msg = await Task.Run(() => _pacienteDAO.Add(paciente));
-            TempData["mensaje"] = msg;
-            return RedirectToAction(nameof(Listado));
-            */
+         
             if (!ModelState.IsValid) return View(paciente);
 
             var result = await Task.Run(() => _pacienteDAO.Add(paciente));

@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AplicacionCitasMedicasDB.styles.css" asp-append-version="true" />
- 
 </head>
 <body>
     <header>
@@ -35,14 +34,12 @@
 
                             @if (rol == "Administrador")
                             {
-                                <li class="nav-link text-dark">
-                                    <a asp-controller="Paciente" asp-action="Listado">Pacientes</a>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="#">Pacientes</a>
                                 </li>
-                                <li class="nav-link text-dark">
-                                    <a asp-controller="Medico" asp-action="Listado">Medicos</a>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="#">Médicos</a>
                                 </li>
-
-  
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" href="#">Usuarios</a>
                                 </li>

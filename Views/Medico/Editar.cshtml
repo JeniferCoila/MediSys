@@ -1,80 +1,70 @@
 ﻿@model AplicacionCitasMedicasDB.Models.Medico
-
 @{
     ViewData["Title"] = "Editar Médico";
 }
 
 <div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Editar Médico</h2>
+        <a asp-action="Listado" class="btn btn-outline-secondary">Volver al listado</a>
+    </div>
 
-            <h2 class="mb-4">Editar Médico</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Editar" method="post">
+                @Html.AntiForgeryToken()
 
-            <div class="card shadow-sm">
-                <div class="card-body">
+                <!-- Id oculto -->
+                <input type="hidden" asp-for="IdMedico" />
 
-                    <form asp-action="Editar" method="post">
-                        @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                        <!-- ID oculto -->
-                        <input type="hidden" asp-for="IdMedico" />
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label asp-for="CMP" class="form-label"></label>
+                        <input asp-for="CMP" class="form-control" />
+                        <span asp-validation-for="CMP" class="text-danger"></span>
+                    </div>
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="col-md-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="CMP" class="form-label"></label>
-                                <input asp-for="CMP" class="form-control" />
-                                <span asp-validation-for="CMP" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="Nombre" class="form-label"></label>
-                                <input asp-for="Nombre" class="form-control" />
-                                <span asp-validation-for="Nombre" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="Apellido" class="form-label"></label>
-                                <input asp-for="Apellido" class="form-control" />
-                                <span asp-validation-for="Apellido" class="text-danger"></span>
-                            </div>
-                        </div>
+                    <div class="col-md-3">
+                        <label asp-for="Apellido" class="form-label"></label>
+                        <input asp-for="Apellido" class="form-control" />
+                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="IdEspecialidad" class="form-label"></label>
-                                <select asp-for="IdEspecialidad" class="form-select"
-                                        asp-items="@(new SelectList(ViewBag.Especialidades, "IdEspecialidad", "Nombre"))">
-                                    <option value="">-- Seleccionar Especialidad --</option>
-                                </select>
-                                <span asp-validation-for="IdEspecialidad" class="text-danger"></span>
-                            </div>
+                    <div class="col-md-3">
+                        <label asp-for="IdEspecialidad" class="form-label">Especialidad</label>
+                        <select asp-for="IdEspecialidad" class="form-select"
+                                asp-items="ViewBag.Especialidades">
+                            <option value="">-- Seleccione --</option>
+                        </select>
+                        <span asp-validation-for="IdEspecialidad" class="text-danger"></span>
+                    </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Telefono" class="form-label"></label>
-                                <input asp-for="Telefono" class="form-control" />
-                                <span asp-validation-for="Telefono" class="text-danger"></span>
-                            </div>
-                        </div>
+                    <div class="col-md-3">
+                        <label asp-for="Telefono" class="form-label"></label>
+                        <input asp-for="Telefono" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Correo" class="form-label"></label>
-                            <input asp-for="Correo" type="email" class="form-control" />
-                            <span asp-validation-for="Correo" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save"></i> Guardar Cambios
-                            </button>
-                            <a asp-action="Listado" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Volver al listado
-                            </a>
-                        </div>
-                    </form>
-
+                    <div class="col-md-5">
+                        <label asp-for="Correo" class="form-label"></label>
+                        <input asp-for="Correo" type="email" class="form-control" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <a asp-action="Listado" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -84,5 +74,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
-

@@ -9,7 +9,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
         string Delete(Medico item);
         IEnumerable<Medico> GetAll();
         IEnumerable<Medico> GetAll(string filtro);
-        Medico Search(object id);
-        int Contar(); // conta registros activos
+        Medico? Search(object id);
+        int Contar();
     }
 }

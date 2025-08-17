@@ -10,6 +10,6 @@ namespace AplicacionCitasMedicasDB.Repositorio
         IEnumerable<Paciente> GetAll();
         IEnumerable<Paciente> GetAll(string filtro);
         Paciente Search(object id);
-        int Contar(); // conta registros activos
+        int Contar(); 
     }
 }

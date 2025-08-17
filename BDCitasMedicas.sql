@@ -309,3 +309,184 @@ CREATE TABLE Citas (
 CREATE INDEX IX_Citas_Medico_Fecha ON dbo.Citas(IdMedico, Fecha);
 CREATE INDEX IX_Citas_Paciente_Fecha ON dbo.Citas(IdPaciente, Fecha);
 
+----INSERTAR ESPECIALIDADES----
+INSERT INTO Especialidades (Nombre) VALUES
+('Cardiología'),
+('Pediatría'),
+('Neurología'),
+('Dermatología'),
+('Traumatología'),
+('Oftalmología'),
+('Gastroenterología'),
+('Oncología'),
+('Medicina General'),
+('Otorrinolaringología');
+
+INSERT INTO Especialidades (Nombre) VALUES
+('Psicología');
+
+
+---ESPECIALIDADES ACTIVAS
+CREATE PROCEDURE usp_Especialidades_Listar
+AS
+BEGIN
+    SELECT IdEspecialidad, Nombre
+    FROM Especialidades
+    WHERE Estado = 1
+    ORDER BY Nombre;
+END
+GO
+---PROCEDURES MÉDICOS----
+CREATE OR ALTER PROCEDURE usp_medicos
+    @filtro VARCHAR(100) = ''
+AS
+BEGIN
+    SELECT  m.IdMedico,
+            m.CMP,
+            m.Nombre,
+            m.Apellido,
+            m.IdEspecialidad,
+            e.Nombre AS NombreEspecialidad,
+            m.Telefono,
+            m.Correo
+    FROM dbo.Medicos m
+    INNER JOIN dbo.Especialidades e ON e.IdEspecialidad = m.IdEspecialidad
+    WHERE m.Estado = 1
+      AND (
+            @filtro = '' OR
+            m.CMP LIKE '%' + @filtro + '%' OR
+            m.Nombre LIKE '%' + @filtro + '%' OR
+            m.Apellido LIKE '%' + @filtro + '%'
+          )
+    ORDER BY m.IdMedico;
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE usp_medicos_buscar
+    @IdMedico INT
+AS
+BEGIN
+    SELECT  m.IdMedico,
+            m.CMP,
+            m.Nombre,
+            m.Apellido,
+            m.IdEspecialidad,
+            m.Telefono,
+            m.Correo,
+            m.FechaCreacion,
+            m.FechaActualizacion,
+            m.FechaBaja,
+            e.Nombre AS NombreEspecialidad
+    FROM Medicos m
+    INNER JOIN Especialidades e ON e.IdEspecialidad = m.IdEspecialidad
+    WHERE m.IdMedico = @IdMedico AND m.Estado = 1;
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE usp_medicos_agregar
+    @CMP            VARCHAR(20),
+    @Nombre         VARCHAR(100),
+    @Apellido       VARCHAR(100),
+    @IdEspecialidad INT,
+    @Telefono       VARCHAR(15) = NULL,
+    @Correo         VARCHAR(100) = NULL
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Medicos WHERE CMP = @CMP AND Estado = 1)
+        RETURN -1; -- CMP duplicado
+
+    IF EXISTS (SELECT 1 FROM Medicos WHERE Nombre=@Nombre AND Apellido=@Apellido AND Estado = 1)
+        RETURN -2; -- Nombre+Apellido duplicado
+
+    INSERT INTO Medicos(CMP,Nombre,Apellido,IdEspecialidad,Telefono,Correo)
+    VALUES (@CMP,@Nombre,@Apellido,@IdEspecialidad,@Telefono,@Correo);
+
+    RETURN 1;
+END
+GO
+
+CREATE OR ALTER PROCEDURE usp_medicos_actualizar
+    @IdMedico       INT,
+    @CMP            VARCHAR(20),
+    @Nombre         VARCHAR(100),
+    @Apellido       VARCHAR(100),
+    @IdEspecialidad INT,
+    @Telefono       VARCHAR(15) = NULL,
+    @Correo         VARCHAR(100) = NULL
+AS
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM Medicos WHERE IdMedico=@IdMedico AND Estado=1)
+        RETURN -99;
+
+    IF EXISTS (SELECT 1 FROM Medicos WHERE CMP=@CMP AND IdMedico<>@IdMedico AND Estado=1)
+        RETURN -1;
+
+    IF EXISTS (SELECT 1 FROM Medicos
+               WHERE Nombre=@Nombre AND Apellido=@Apellido AND IdMedico<>@IdMedico AND Estado=1)
+        RETURN -2;
+
+    UPDATE Medicos
+       SET CMP=@CMP,
+           Nombre=@Nombre,
+           Apellido=@Apellido,
+           IdEspecialidad=@IdEspecialidad,
+           Telefono=@Telefono,
+           Correo=@Correo,
+           FechaActualizacion = GETDATE()
+     WHERE IdMedico=@IdMedico AND Estado=1;
+
+    RETURN 1;
+END
+GO
+
+CREATE OR ALTER PROCEDURE usp_medicos_eliminar
+    @IdMedico INT
+AS
+BEGIN
+    UPDATE Medicos
+       SET Estado = 0,
+           FechaBaja = GETDATE()
+     WHERE IdMedico = @IdMedico AND Estado = 1;
+END
+GO
+
+
+
+
+CREATE OR ALTER PROCEDURE usp_medicos_contar
+AS
+BEGIN
+    SELECT COUNT(1) FROM Medicos WHERE Estado = 1;
+END
+GO
+
+
+INSERT INTO Medicos (CMP, Nombre, Apellido, IdEspecialidad, Telefono, Correo)
+VALUES
+('CMP001', 'Luis', 'García', 1, '987654321', 'luis.garcia@clinica.com'),
+('CMP002', 'María', 'Pérez', 2, '912345678', 'maria.perez@clinica.com'),
+('CMP003', 'Juan', 'Fernández', 3, '999888777', 'juan.fernandez@clinica.com'),
+('CMP004', 'Ana', 'Torres', 4, '955112233', 'ana.torres@clinica.com'),
+('CMP005', 'Pedro', 'Ramírez', 5, '944223344', 'pedro.ramirez@clinica.com'),
+('CMP006', 'Carmen', 'Ruiz', 6, '933445566', 'carmen.ruiz@clinica.com'),
+('CMP007', 'Jorge', 'Flores', 7, '922556677', 'jorge.flores@clinica.com'),
+('CMP008', 'Laura', 'Gómez', 8, '911667788', 'laura.gomez@clinica.com'),
+('CMP009', 'Roberto', 'Martínez', 9, '988776655', 'roberto.martinez@clinica.com'),
+('CMP010', 'Patricia', 'Castillo', 10, '977665544', 'patricia.castillo@clinica.com'),
+('CMP011', 'Diego', 'Morales', 1, '966554433', 'diego.morales@clinica.com'),
+('CMP012', 'Sofía', 'Vega', 2, '955443322', 'sofia.vega@clinica.com'),
+('CMP013', 'Andrés', 'Campos', 3, '944332211', 'andres.campos@clinica.com'),
+('CMP014', 'Elena', 'Rojas', 4, '933221100', 'elena.rojas@clinica.com'),
+('CMP015', 'Francisco', 'Navarro', 5, '922110099', 'francisco.navarro@clinica.com');
+
+INSERT INTO Medicos (CMP, Nombre, Apellido, IdEspecialidad, Telefono, Correo)
+VALUES
+('CMP016', 'Mateo', 'Silva', 1, '987123456', 'mateo.silva@clinica.com'),
+('CMP017', 'Isabella', 'Cruz', 2, '988234567', 'isabella.cruz@clinica.com'),
+('CMP018', 'Gabriel', 'Ortega', 3, '989345678', 'gabriel.ortega@clinica.com'),
+('CMP019', 'Valentina', 'Paredes', 4, '990456789', 'valentina.paredes@clinica.com'),
+('CMP020', 'Sebastián', 'Herrera', 5, '991567890', 'sebastian.herrera@clinica.com');
+
+SELECT * FROM Medicos

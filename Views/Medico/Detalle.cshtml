@@ -1,5 +1,4 @@
 ﻿@model AplicacionCitasMedicasDB.Models.Medico
-
 @{
     ViewData["Title"] = "Detalles del Médico";
 }
@@ -7,52 +6,58 @@
 <div class="container mt-4">
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Detalles del Médico</h4>
+            <h5 class="m-0">Detalles del Médico</h5>
         </div>
-        <div class="card-body">
-            <dl class="row">
- 
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CMP)</dt>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.IdMedico</dd>
+
+                <dt class="col-sm-3">CMP</dt>
                 <dd class="col-sm-9">@Model.CMP</dd>
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+                <dt class="col-sm-3">Nombre</dt>
                 <dd class="col-sm-9">@Model.Nombre</dd>
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Apellido)</dt>
+                <dt class="col-sm-3">Apellido</dt>
                 <dd class="col-sm-9">@Model.Apellido</dd>
 
- 
-
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.NombreEspecialidad)</dt>
-                <dd class="col-sm-9">@Model.NombreEspecialidad</dd>
-
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefono)</dt>
-                <dd class="col-sm-9">@Model.Telefono</dd>
-
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Correo)</dt>
-                <dd class="col-sm-9">@Model.Correo</dd>
-
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaCreacion)</dt>
-                <dd class="col-sm-9">@Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</dd>
-
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaActualizacion)</dt>
+                <dt class="col-sm-3">Especialidad</dt>
                 <dd class="col-sm-9">
-                    @(Model.FechaActualizacion.HasValue
-                                        ? Model.FechaActualizacion.Value.ToString("dd/MM/yyyy HH:mm")
-                                        : "Nunca actualizado")
+                    @(!string.IsNullOrWhiteSpace(Model.NombreEspecialidad) ? Model.NombreEspecialidad : "—")
                 </dd>
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FechaBaja)</dt>
+                <dt class="col-sm-3">Teléfono</dt>
+                <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Telefono) ? Model.Telefono : "—")</dd>
+
+                <dt class="col-sm-3">Correo</dt>
+                <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Correo) ? Model.Correo : "—")</dd>
+
+                <dt class="col-sm-3">Estado</dt>
+                <dd class="col-sm-9">@(Model.FechaBaja.HasValue ? "Baja" : "Activo")</dd>
+
+                <dt class="col-sm-3">Fecha de Creación</dt>
+                <dd class="col-sm-9">
+                    @(Model.FechaCreacion.HasValue ? Model.FechaCreacion.Value.ToString("dd/MM/yyyy HH:mm") : "—")
+                </dd>
+
+                <dt class="col-sm-3">Fecha de Actualización</dt>
+                <dd class="col-sm-9">
+                    @(Model.FechaActualizacion.HasValue ? Model.FechaActualizacion.Value.ToString("dd/MM/yyyy HH:mm") : "Nunca actualizado")
+                </dd>
+
+                <dt class="col-sm-3">Fecha de Baja</dt>
                 <dd class="col-sm-9">
                     @(Model.FechaBaja.HasValue
-                                        ? Model.FechaBaja.Value.ToString("dd/MM/yyyy HH:mm")
-                                        : "Activo")
+                        ? Model.FechaBaja.Value.ToString("dd/MM/yyyy HH:mm")
+                        : "Activo")
                 </dd>
             </dl>
         </div>
-        <div class="card-footer text-end">
-            <a asp-action="Listado" class="btn btn-secondary">Volver al Listado</a>
+
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a asp-action="Listado" class="btn btn-outline-secondary">Volver al listado</a>
             <a asp-action="Editar" asp-route-id="@Model.IdMedico" class="btn btn-warning">Editar</a>
         </div>
     </div>
