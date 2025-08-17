@@ -20,7 +20,22 @@ namespace AplicacionCitasMedicasDB.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            //muestra form login
+            // Verifica si ya hay sesión activa
+            var rol = HttpContext.Session.GetString("rol");
+
+            if (!string.IsNullOrEmpty(rol))
+            {
+                // Redirige directamente al menú según el rol
+                return rol switch
+                {
+                    "Administrador" => RedirectToAction("Menu", "Admin"),
+                    "Médico" => RedirectToAction("Menu", "Medico"),
+                    "Paciente" => RedirectToAction("Menu", "Paciente"),
+                    _ => RedirectToAction("Index", "Home")
+                };
+            }
+
+            // Si no hay sesión → muestra form de login
             return View();
         }
 
@@ -29,24 +44,25 @@ namespace AplicacionCitasMedicasDB.Controllers
         {
             var usuario = _usuarioDAO.ValidarLogin(username, password);
 
-            if (usuario != null) //si existe se guarda el user y rol
+            if (usuario == null)
             {
-                HttpContext.Session.SetString("username", usuario.Username!);
-                HttpContext.Session.SetString("rol", usuario.NombreRol!);
-
-                if (usuario.NombreRol == "Administrador")
-                    return RedirectToAction("Menu", "Admin");
-                else if (usuario.NombreRol == "Médico")
-                    return RedirectToAction("Menu", "Medico");
-                else if (usuario.NombreRol == "Paciente")
-                    return RedirectToAction("Menu", "Paciente");
+                ViewBag.Error = "Usuario o contraseña incorrectos";
+                return View();
             }
 
-            //de ser incorrectos
-            ViewBag.Error = "Usuario o contraseña incorrectos";
-            return View();
-        }
+            // Guardar en sesión
+            HttpContext.Session.SetString("username", usuario.Username ?? string.Empty);
+            HttpContext.Session.SetString("rol", usuario.NombreRol ?? string.Empty);
 
+            // Decidir destino según rol
+            return usuario.NombreRol switch
+            {
+                "Administrador" => RedirectToAction("Menu", "Admin"),
+                "Médico" => RedirectToAction("Menu", "Medico"),
+                "Paciente" => RedirectToAction("Menu", "Paciente"),
+                _ => RedirectToAction("Index", "Home") // fallback por si llega algo inesperado
+            };
+        }
 
         public IActionResult Logout()
         {

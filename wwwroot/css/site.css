@@ -1,22 +1,96 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+}
+
+
+:root {
+    --brand-700: #0B5692; /* azul oscuro */
+    --brand-600: #0E67B1; /* azul principal */
+    --accent: #13B38B; /* verde/teal acento */
+    --bg: #F1F5F9; /* fondo suave */
+    --border: #94A3B8; /* gris borde */
+    --text: #0F172A; /* texto principal */
 }
 
 body {
-  margin-bottom: 60px;
+    background: var(--bg);
 }
+
+/* Botones */
+.btn-brand {
+    background: var(--brand-600) !important;
+    color: #fff !important;
+    border: 0 !important;
+}
+
+    .btn-brand:hover {
+        background: var(--brand-700) !important;
+    }
+
+.btn-outline-brand {
+    color: var(--brand-600) !important;
+    border-color: var(--brand-600) !important;
+}
+
+    .btn-outline-brand:hover {
+        color: #fff !important;
+        background: var(--brand-600) !important;
+        border-color: var(--brand-600) !important;
+    }
+
+/* Tarjetas / tabla */
+.card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: .75rem;
+    box-shadow: 0 1px 2px rgba(2,8,20,.05);
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+/* Navbar “corporativa” */
+.navbar-brand {
+    color: #0B5692 !important;
+    font-weight: 600;
+}
+
+.navbar-medisys {
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+    .navbar-medisys .nav-link {
+        color: #334155 !important;
+    }
+
+        .navbar-medisys .nav-link.active {
+            color: #0E67B1 !important;
+            font-weight: 600;
+        }
+
+/* SweetAlert2 con tu color */
+.swal2-confirm {
+    background: var(--brand-600) !important;
+    border: 0 !important;
+}
+
+    .swal2-confirm:hover {
+        background: var(--brand-700) !important;
+    }
