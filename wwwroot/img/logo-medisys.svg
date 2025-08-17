@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="48" viewBox="0 0 220 48">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0E67B1"/>
+      <stop offset="1" stop-color="#0B5692"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="44" height="44" rx="10" fill="url(#g)"/>
+  <path d="M12 36 V12 h5 l7 8 7-8 h5 v24 h-5 V20 l-7 8 -7-8 v16z" fill="#FFFFFF"/>
+  <rect x="23" y="8" width="2.8" height="8" fill="#13B38B" rx="1.4"/>
+  <rect x="20" y="11" width="8" height="2.8" fill="#13B38B" rx="1.4"/>
+  <g transform="translate(54,10)" fill="#0B5692">
+    <text x="0" y="24" font-family="Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="0.5">
+      Medisys
+    </text>
+  </g>
+</svg>
