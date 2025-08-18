@@ -58,8 +58,13 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model == null || !Model.Any())
+            @if (Model == null)
             {
+                <tr>
+                    <td colspan="10" class="text-center text-muted py-4">No hay registros disponibles</td>
+
+                </tr>
+            } else if (!Model.Any()){
                 <tr>
                     <td colspan="10" class="text-center text-muted py-4">No se encontraron resultados</td>
                 </tr>

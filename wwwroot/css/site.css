@@ -31,6 +31,10 @@ body {
     background: var(--bg);
 }
 
+main {
+    padding: 50px 20px;
+}
+
 /* Botones */
 .btn-brand {
     background: var(--brand-600) !important;

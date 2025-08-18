@@ -86,7 +86,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
         {
             var lista = new List<Medico>();
             using var cn = new SqlConnection(_config.GetConnectionString("cadena"));
-            using var cmd = new SqlCommand("usp_listarMedicos", cn) { CommandType = CommandType.StoredProcedure };
+            using var cmd = new SqlCommand("usp_medicos", cn) { CommandType = CommandType.StoredProcedure };
             cmd.Parameters.AddWithValue("@filtro", filtro ?? "");
 
             cn.Open();
