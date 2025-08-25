@@ -1,4 +1,5 @@
-﻿using AplicacionCitasMedicasDB.Models;
+﻿using AplicacionCitasMedicasDB.Filtros;
+using AplicacionCitasMedicasDB.Models;
 using AplicacionCitasMedicasDB.Repositorio;
 using Azure;
 using Microsoft.AspNetCore.Mvc;
@@ -7,16 +8,20 @@ using System.Reflection;
 
 namespace AplicacionCitasMedicasDB.Controllers
 {
+    [Administrador]
+ 
     public class MedicoController : Controller
     {
 
         private readonly IMedico _medicoDAO;
         private readonly IEspecialidad _espDAO;
+        private readonly IWebHostEnvironment _env;
 
-        public MedicoController(IMedico medicoDAO, IEspecialidad espDAO)
+        public MedicoController(IMedico medicoDAO, IEspecialidad espDAO, IWebHostEnvironment env)
         {
             _medicoDAO = medicoDAO;
             _espDAO = espDAO;
+            _env = env;
         }
 
 
@@ -80,20 +85,49 @@ namespace AplicacionCitasMedicasDB.Controllers
             return View();
         }
 
-
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(Medico medico)
+        public async Task<IActionResult> Crear(Medico medico, IFormFile? foto)
         {
 
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
                 return RedirectToAction("Index", "Login");
+
+            // Validar foto obligatoria
+            if (foto == null || foto.Length == 0)
+                ModelState.AddModelError(string.Empty, "La foto es obligatoria.");
+
+            // Validar extensión y tamaño
+            if (foto != null)
+            {
+                var ext = Path.GetExtension(foto.FileName).ToLowerInvariant();
+                var ok = new[] { ".jpg", ".jpeg", ".png", ".webp" }.Contains(ext);
+                if (!ok) ModelState.AddModelError(string.Empty, "Formato de imagen inválido (use .jpg, .jpeg, .png o .webp).");
+                if (foto.Length > 2 * 1024 * 1024) ModelState.AddModelError(string.Empty, "La imagen no debe superar 2MB.");
+            }
+
 
             if (!ModelState.IsValid)
             {
                 CargarEspecialidades();
                 return View(medico);
             }
+
+
+            // Guardar archivo en wwwroot/uploads/medicos
+            var uploads = Path.Combine(_env.WebRootPath, "uploads", "medicos");
+            Directory.CreateDirectory(uploads);
+
+            var fileName = $"{medico.CMP}_{Guid.NewGuid():N}{Path.GetExtension(foto!.FileName)}";
+            var filePath = Path.Combine(uploads, fileName);
+            using (var fs = new FileStream(filePath, FileMode.Create))
+                await foto.CopyToAsync(fs);
+
+            // Ruta pública
+            medico.FotoUrl = $"/uploads/medicos/{fileName}";
+
+
 
             var result = await Task.Run(() => _medicoDAO.Add(medico));
 
@@ -121,6 +155,93 @@ namespace AplicacionCitasMedicasDB.Controllers
 
 
         }
+        */
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Crear(Medico medico, IFormFile? foto)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
+                return RedirectToAction("Index", "Login");
+
+            // Validar foto obligatoria
+            if (foto == null || foto.Length == 0)
+                ModelState.AddModelError(string.Empty, "La foto es obligatoria.");
+
+            // Validar extensión y tamaño
+            if (foto != null)
+            {
+                var ext = Path.GetExtension(foto.FileName).ToLowerInvariant();
+                var ok = new[] { ".jpg", ".jpeg", ".png", ".webp" }.Contains(ext);
+                if (!ok) ModelState.AddModelError(string.Empty, "Formato de imagen inválido (use .jpg, .jpeg, .png o .webp).");
+                if (foto.Length > 2 * 1024 * 1024) ModelState.AddModelError(string.Empty, "La imagen no debe superar 2MB.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                CargarEspecialidades();
+                return View(medico);
+            }
+
+            // Preparar rutas
+            var uploads = Path.Combine(_env.WebRootPath, "uploads", "medicos");
+            Directory.CreateDirectory(uploads);
+            var fileName = $"{medico.CMP}_{Guid.NewGuid():N}{Path.GetExtension(foto!.FileName)}";
+            var filePath = Path.Combine(uploads, fileName);
+
+            // Intentar guardar el archivo
+            try
+            {
+                using var fs = new FileStream(filePath, FileMode.Create);
+                await foto.CopyToAsync(fs);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"No se pudo guardar la imagen: {ex.Message}");
+                CargarEspecialidades();
+                return View(medico);
+            }
+
+            // Ruta pública para BD
+            medico.FotoUrl = $"/uploads/medicos/{fileName}";
+
+            var result = await Task.Run(() => _medicoDAO.Add(medico));
+
+            // Si falla el insert, eliminamos el archivo para no dejarlo huérfano
+            if (result.code != 1)
+            {
+                try { System.IO.File.Delete(filePath); } catch { /* ignore */ }
+            }
+
+            if (result.code == -10) // foto requerida desde SP (doble seguridad)
+            {
+                ModelState.AddModelError(string.Empty, result.message);
+                CargarEspecialidades();
+                return View(medico);
+            }
+            if (result.code == -1)
+            {
+                ModelState.AddModelError("CMP", result.message);
+                CargarEspecialidades();
+                return View(medico);
+            }
+            if (result.code == -2)
+            {
+                ModelState.AddModelError(string.Empty, result.message);
+                CargarEspecialidades();
+                return View(medico);
+            }
+            if (result.code != 1)
+            {
+                ModelState.AddModelError(string.Empty, result.message);
+                CargarEspecialidades();
+                return View(medico);
+            }
+
+            TempData["mensaje"] = result.message;
+            return RedirectToAction(nameof(Listado));
+        }
+
 
         // 
         [HttpGet]

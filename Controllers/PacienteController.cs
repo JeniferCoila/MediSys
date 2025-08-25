@@ -1,4 +1,5 @@
-﻿using AplicacionCitasMedicasDB.Models;
+﻿using AplicacionCitasMedicasDB.Filtros;
+using AplicacionCitasMedicasDB.Models;
 using AplicacionCitasMedicasDB.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
@@ -6,6 +7,8 @@ using System.Reflection;
 
 namespace AplicacionCitasMedicasDB.Controllers
 {
+
+    [Administrador]
     public class PacienteController : Controller
     {
 

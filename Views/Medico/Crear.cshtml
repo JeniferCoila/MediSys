@@ -13,7 +13,7 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <form asp-action="Crear" method="post" novalidate>
+            <form asp-action="Crear" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
 
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
@@ -59,6 +59,12 @@
                         <input asp-for="Correo" type="email" class="form-control" placeholder="nombre@clinica.com" />
                         <span asp-validation-for="Correo" class="text-danger"></span>
                     </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Foto</label>
+                    <input type="file" name="foto" class="form-control" accept="image/*" />
+                    <div class="form-text">Formatos: JPG, PNG, WEBP (máx. 2 MB).</div>
                 </div>
 
                 <!-- Campos NO visibles en 'Crear' (los maneja la BD)

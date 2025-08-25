@@ -1,0 +1,160 @@
+﻿@using System.Linq
+@model IEnumerable<AplicacionCitasMedicasDB.Models.Cita>
+
+@{
+    ViewData["Title"] = "Listado de Citas";
+    var filtro         = ViewBag.Filtro as string ?? "";
+    int paginaActual   = ViewBag.PaginaActual ?? 1;
+    int totalPaginas   = ViewBag.TotalPaginas ?? 1;
+    int totalRegistros = ViewBag.TotalRegistros ?? 0;
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="m-0">Citas</h2>
+    <a asp-action="Crear" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nueva Cita
+    </a>
+</div>
+
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" asp-action="Listado" class="row g-2">
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <input type="text"
+                       name="filtro"
+                       value="@filtro"
+                       class="form-control"
+                       placeholder="Buscar por Paciente, Médico o Motivo" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-primary">Buscar</button>
+            </div>
+            <div class="col-auto">
+                <a asp-action="Listado" class="btn btn-outline-secondary">Limpiar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.IdCita)</th>
+                <th>Paciente</th>
+                <th>Médico</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.Fecha)</th>
+                <th>Hora</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.NombreEstado)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault()!.Motivo)</th>
+                <th class="text-center" style="width:190px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <tr>
+                <td colspan="8" class="text-center text-muted py-4">No se encontraron resultados</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.IdCita</td>
+
+                    <td>
+                        <div class="fw-semibold">@c.PacienteNombreCompleto</div>
+                        <div class="text-muted small">DNI: @c.PacienteDNI</div>
+                    </td>
+
+                    <td>
+                        <div class="fw-semibold">@c.MedicoNombreCompleto</div>
+                        <div class="text-muted small">CMP: @c.MedicoCMP</div>
+                    </td>
+
+                    <td>@c.Fecha.ToString("yyyy-MM-dd")</td>
+
+                    <td>
+                        @c.HoraInicio.ToString(@"hh\:mm") —
+                        @((c.HoraFin ?? c.HoraInicio.Add(TimeSpan.FromMinutes(30))).ToString(@"hh\:mm"))
+                        <div class="text-muted small">(@c.DuracionMinutos min)</div>
+                    </td>
+
+                    <td class="align-middle">
+                        @{
+                            var estado = c.NombreEstado ?? "—";
+                            var badge = estado switch
+                            {
+                                "Programada"   => "bg-primary",
+                                "Atendida"     => "bg-success",
+                                "Cancelada"    => "bg-danger",
+                                "Reprogramada" => "bg-info",
+                                "No asistió"   => "bg-warning text-dark",
+                                _              => "bg-secondary"
+                            };
+
+                            var ahora  = DateTime.Now;
+                            var fin    = c.HoraFin ?? c.HoraInicio.Add(TimeSpan.FromMinutes(30));
+                            bool paso  = c.Fecha.Date < ahora.Date ||
+                                         (c.Fecha.Date == ahora.Date && fin <= ahora.TimeOfDay);
+
+                            if (estado == "Programada" && paso)
+                            {
+                                badge = "bg-warning text-dark";
+                                
+                            }
+                        }
+                        
+                        <span class="badge @badge px-3 py-2 fs-6 fw-semibold">@estado</span>
+                    </td>
+
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(c.Motivo))
+                        {
+                            @c.Motivo
+                        }
+                        else
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                    </td>
+
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2 flex-nowrap">
+                            <a asp-action="Detalle" asp-route-id="@c.IdCita"
+                               class="btn btn-sm btn-outline-secondary">Detalles</a>
+
+                            <a asp-action="Editar" asp-route-id="@c.IdCita"
+                               class="btn btn-sm btn-outline-primary">Editar</a>
+
+                            <form asp-action="Eliminar" method="post" class="d-inline" data-confirm="¿Eliminar cita?">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@c.IdCita" />
+                                    <input type="hidden" name="filtro" value="@ViewBag.Filtro" />
+                                    <input type="hidden" name="page" value="@ViewBag.PaginaActual" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                             </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
+
+@{
+    // Config para parcial de paginado + totaL
+    ViewBag.PagerAction = "Listado";
+}
+@await Html.PartialAsync("_PagerWithTotal")

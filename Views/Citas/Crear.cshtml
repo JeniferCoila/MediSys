@@ -1,0 +1,138 @@
+﻿@model AplicacionCitasMedicasDB.Models.Cita
+
+@{
+    ViewData["Title"] = "Crear Cita";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-9">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="m-0">Nueva Cita</h2>
+                <a asp-action="Listado" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver al listado
+                </a>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <form asp-action="Crear" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- Fila: Paciente / Médico / Estado -->
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label asp-for="IdPaciente" class="form-label"></label>
+                                <select asp-for="IdPaciente" class="form-select" asp-items="ViewBag.Pacientes">
+                                    <option value="">-- Seleccione paciente --</option>
+                                </select>
+                                <span asp-validation-for="IdPaciente" class="text-danger"></span>
+                                <div class="form-text">Formato: Nombre Apellido (DNI)</div>
+                            </div>
+
+                            <div class="col-md-5 mb-3">
+                                <label asp-for="IdMedico" class="form-label"></label>
+                                <select asp-for="IdMedico" class="form-select" asp-items="ViewBag.Medicos">
+                                    <option value="">-- Seleccione médico --</option>
+                                </select>
+                                <span asp-validation-for="IdMedico" class="text-danger"></span>
+                                <div class="form-text">Formato: Nombre Apellido - CMP</div>
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label asp-for="IdEstadoCita" class="form-label"></label>
+                                <select asp-for="IdEstadoCita" class="form-select" asp-items="ViewBag.EstadosCita">
+                                    <option value="">-- Estado --</option>
+                                </select>
+                                <span asp-validation-for="IdEstadoCita" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Fila: Fecha / Hora inicio / Hora fin -->
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Fecha" class="form-label"></label>
+                                <input asp-for="Fecha"
+                                       type="date"
+                                       class="form-control"
+                                       asp-format="{0:yyyy-MM-dd}"
+                                       min="1753-01-01"
+                                       max="9999-12-31" />
+                                <span asp-validation-for="Fecha" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="HoraInicio" class="form-label"></label>
+                                <input asp-for="HoraInicio" type="time" class="form-control" />
+                                <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                                <div class="form-text">Ej: 09:00</div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="HoraFin" class="form-label"></label>
+                                <input asp-for="HoraFin" type="time" class="form-control" />
+                                <span asp-validation-for="HoraFin" class="text-danger"></span>
+                                <div class="form-text">Si lo dejas vacío, se asumen 30 min.</div>
+                            </div>
+                        </div>
+
+                        <!-- Fila: Motivo / Observaciones -->
+                        <div class="mb-3">
+                            <label asp-for="Motivo" class="form-label"></label>
+                            <input asp-for="Motivo" class="form-control" placeholder="Motivo de la consulta" />
+                            <span asp-validation-for="Motivo" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Observaciones" class="form-label"></label>
+                            <textarea asp-for="Observaciones" class="form-control" rows="2" placeholder="Notas adicionales"></textarea>
+                            <span asp-validation-for="Observaciones" class="text-danger"></span>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="Listado" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar
+                            </button>
+                        </div>
+
+                        <!-- Campos que NO se editan aquí (ocultos si existieran en el modelo) -->
+                        @* <input type="hidden" asp-for="IdCita" /> *@
+                        @* <input type="hidden" asp-for="Estado" /> *@
+                        @* <input type="hidden" asp-for="FechaCreacion" /> *@
+                        @* <input type="hidden" asp-for="FechaActualizacion" /> *@
+                        @* <input type="hidden" asp-for="FechaBaja" /> *@
+                        @* <input type="hidden" asp-for="RowVersion" /> *@
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        if ($.validator && $.validator.methods) {
+            const baseDate = $.validator.methods.date;
+            $.validator.methods.date = function (value, element) {
+                if (!value) return true; // vacío = válido si el campo no es requerido
+                if (element.type === "date") {
+                    // Acepta el formato nativo HTML5 yyyy-MM-dd
+                    return /^\d{4}-\d{2}-\d{2}$/.test(value) || !isNaN(Date.parse(value));
+                }
+                return baseDate.call(this, value, element);
+            };
+        }
+    </script>
+ 
+}
+

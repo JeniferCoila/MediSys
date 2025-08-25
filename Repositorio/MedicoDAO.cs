@@ -27,6 +27,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
                 cmd.Parameters.Add("@IdEspecialidad", SqlDbType.Int).Value = item.IdEspecialidad;
                 cmd.Parameters.Add("@Telefono", SqlDbType.VarChar, 15).Value = (object?)item.Telefono ?? DBNull.Value;
                 cmd.Parameters.Add("@Correo", SqlDbType.VarChar, 100).Value = (object?)item.Correo ?? DBNull.Value;
+                cmd.Parameters.Add("@FotoUrl", SqlDbType.VarChar, 200).Value = (object?)item.FotoUrl ?? "";
 
                 var ret = cmd.Parameters.Add("RETURN_VALUE", SqlDbType.Int);
                 ret.Direction = ParameterDirection.ReturnValue;
@@ -40,6 +41,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
                     1 => (1, "¡Médico agregado!"),
                     -1 => (-1, "El CMP ya está registrado."),
                     -2 => (-2, "Ya existe un médico con el mismo nombre y apellido."),
+                    -10 => (-10, "La foto es obligatoria."),
                     _ => (0, "No se pudo completar la operación.")
                 };
             }
@@ -88,21 +90,25 @@ namespace AplicacionCitasMedicasDB.Repositorio
             using var cn = new SqlConnection(_config.GetConnectionString("cadena"));
             using var cmd = new SqlCommand("usp_medicos", cn) { CommandType = CommandType.StoredProcedure };
             cmd.Parameters.AddWithValue("@filtro", filtro ?? "");
-
             cn.Open();
+
             using var dr = cmd.ExecuteReader();
+
+            string? S(string col) => dr.IsDBNull(dr.GetOrdinal(col)) ? null : dr.GetString(dr.GetOrdinal(col));
+
             while (dr.Read())
             {
                 lista.Add(new Medico
                 {
-                    IdMedico = dr.GetInt32(0),
-                    CMP = dr.GetString(1),
-                    Nombre = dr.GetString(2),
-                    Apellido = dr.GetString(3),
-                    IdEspecialidad = dr.GetInt32(4),
-                    NombreEspecialidad = dr.IsDBNull(5) ? null : dr.GetString(5),
-                    Telefono = dr.IsDBNull(6) ? null : dr.GetString(6),
-                    Correo = dr.IsDBNull(7) ? null : dr.GetString(7),
+                    IdMedico = dr.GetInt32(dr.GetOrdinal("IdMedico")),
+                    CMP = dr.GetString(dr.GetOrdinal("CMP")),
+                    Nombre = dr.GetString(dr.GetOrdinal("Nombre")),
+                    Apellido = dr.GetString(dr.GetOrdinal("Apellido")),
+                    IdEspecialidad = dr.GetInt32(dr.GetOrdinal("IdEspecialidad")),
+                    NombreEspecialidad = S("NombreEspecialidad"),
+                    Telefono = S("Telefono"),
+                    Correo = S("Correo"),
+                    FotoUrl = S("FotoUrl")
                 });
             }
             return lista;
@@ -111,6 +117,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
         public Medico? Search(object id)
         {
             Medico? medico = null;
+
             using var cn = new SqlConnection(_config.GetConnectionString("cadena"));
             using var cmd = new SqlCommand("usp_medicos_buscar", cn) { CommandType = CommandType.StoredProcedure };
             cmd.Parameters.AddWithValue("@IdMedico", id);
@@ -119,19 +126,25 @@ namespace AplicacionCitasMedicasDB.Repositorio
             using var dr = cmd.ExecuteReader();
             if (dr.Read())
             {
+                // Helper local para leer seguro
+                string? S(string col) => dr.IsDBNull(dr.GetOrdinal(col)) ? null : dr.GetString(dr.GetOrdinal(col));
+                DateTime? D(string col) => dr.IsDBNull(dr.GetOrdinal(col)) ? (DateTime?)null : dr.GetDateTime(dr.GetOrdinal(col));
+                bool B(string col) => !dr.IsDBNull(dr.GetOrdinal(col)) && dr.GetBoolean(dr.GetOrdinal(col));
+
                 medico = new Medico
                 {
-                    IdMedico = dr.GetInt32(0),
-                    CMP = dr.GetString(1),
-                    Nombre = dr.GetString(2),
-                    Apellido = dr.GetString(3),
-                    IdEspecialidad = dr.GetInt32(4),
-                    Telefono = dr.IsDBNull(5) ? null : dr.GetString(5),
-                    Correo = dr.IsDBNull(6) ? null : dr.GetString(6),
-                    FechaCreacion = dr.FieldCount > 7 && !dr.IsDBNull(7) ? dr.GetDateTime(7) : null,
-                    FechaActualizacion = dr.FieldCount > 8 && !dr.IsDBNull(8) ? dr.GetDateTime(8) : null,
-                    FechaBaja = dr.FieldCount > 9 && !dr.IsDBNull(9) ? dr.GetDateTime(9) : null,
-                    NombreEspecialidad = dr.FieldCount > 10 && !dr.IsDBNull(10) ? dr.GetString(10) : null
+                    IdMedico = dr.GetInt32(dr.GetOrdinal("IdMedico")),
+                    CMP = dr.GetString(dr.GetOrdinal("CMP")),
+                    Nombre = dr.GetString(dr.GetOrdinal("Nombre")),
+                    Apellido = dr.GetString(dr.GetOrdinal("Apellido")),
+                    IdEspecialidad = dr.GetInt32(dr.GetOrdinal("IdEspecialidad")),
+                    Telefono = S("Telefono"),
+                    Correo = S("Correo"),
+                    FechaCreacion = D("FechaCreacion"),
+                    FechaActualizacion = D("FechaActualizacion"),
+                    FechaBaja = D("FechaBaja"),
+                    NombreEspecialidad = S("NombreEspecialidad"),
+                    FotoUrl = S("FotoUrl")
                 };
             }
             return medico;
