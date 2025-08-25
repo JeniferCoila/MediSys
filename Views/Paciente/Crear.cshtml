@@ -38,7 +38,9 @@
                     <input asp-for="FechaNacimiento"
                            type="date"
                            class="form-control"
-                           value="@(Model.FechaNacimiento.ToString("yyyy-MM-dd"))" />
+                           value="@(Model.FechaNacimiento != DateTime.MinValue
+                    ? Model.FechaNacimiento.ToString("yyyy-MM-dd")
+                    : string.Empty)" />
                     <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
                 </div>
 

@@ -7,7 +7,11 @@
 <h4>Panel de administración</h4>
 
 <ul>
-    <a asp-controller="Paciente" asp-action="Listado">Gestionar Pacientes</a>
-    <li><a href="#">Gestionar Médicos</a></li>
     <li><a href="#">Gestionar Usuarios</a></li>
+    <li><a asp-controller="Paciente" asp-action="Listado">Gestionar Pacientes</a></li>
+    <li><a asp-controller ="Medico" asp-action="Listado">Gestionar Médicos</a></li>
+    <li><a asp-controller="Admin" asp-action="ListadoMedicosBajas"  >Gestionar Medicos Eliminados</a></li>
+    <li><a asp-controller="Admin" asp-action="ListadoPacientesBajas">Gestionar Pacientes Eliminados</a></li>
+    <li><a asp-controller="Citas" asp-action="Listado">Gestionar Citas</a></li>
+
 </ul>

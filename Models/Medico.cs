@@ -31,6 +31,8 @@ namespace AplicacionCitasMedicasDB.Models
         [MaxLength(100)]
         public string? Correo { get; set; }
 
+        public string? FotoUrl { get; set; }
+
         // Auditoría (opcional mostrar en Details)
         public DateTime? FechaCreacion { get; set; }
         public DateTime? FechaActualizacion { get; set; }

@@ -1,0 +1,115 @@
+﻿@model AplicacionCitasMedicasDB.Models.Cita
+
+@{
+    ViewData["Title"] = "Editar Cita";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Editar Cita</h2>
+    <a asp-action="Listado" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver al listado
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Editar" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="IdCita" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Paciente -->
+            <div class="mb-3">
+                <label asp-for="IdPaciente" class="form-label">Paciente</label>
+                <select asp-for="IdPaciente" class="form-select" asp-items="ViewBag.Pacientes"></select>
+                <span asp-validation-for="IdPaciente" class="text-danger"></span>
+            </div>
+
+            <!-- Médico -->
+            <div class="mb-3">
+                <label asp-for="IdMedico" class="form-label">Médico</label>
+                <select asp-for="IdMedico" class="form-select" asp-items="ViewBag.Medicos"></select>
+                <span asp-validation-for="IdMedico" class="text-danger"></span>
+            </div>
+
+            <!-- Fecha -->
+            <div class="mb-3">
+                <label asp-for="Fecha" class="form-label">Fecha</label>
+                <input asp-for="Fecha" type="date" class="form-control" asp-format="{0:yyyy-MM-dd}" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <!-- Hora inicio -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HoraInicio" class="form-label">Hora inicio</label>
+                    <input asp-for="HoraInicio" type="time" class="form-control" />
+                    <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                </div>
+
+                <!-- Hora fin -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HoraFin" class="form-label">Hora fin</label>
+                    <input asp-for="HoraFin" type="time" class="form-control" />
+                    <span asp-validation-for="HoraFin" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Estado (select + badge al lado) -->
+            <div class="mb-3">
+                <label asp-for="IdEstadoCita" class="form-label">Estado</label>
+
+                <div class="input-group">
+                    <select asp-for="IdEstadoCita"
+                            class="form-select"
+                            asp-items="ViewBag.EstadosCita"></select>
+
+                    <!-- Badge visual -->
+                    @{
+                        // Si el controlador ya cargó el badge, úsalo; si no, calcúlalo aquí.
+                        string estadoTexto = ViewBag.EstadoNombre as string ?? (Model?.NombreEstado ?? "—");
+                        string badgeClass = ViewBag.EstadoBadgeClass as string ?? (estadoTexto switch
+                        {
+                            "Programada" => "bg-primary",
+                            "Atendida" => "bg-success",
+                            "Cancelada" => "bg-danger",
+                            "Reprogramada" => "bg-info",
+                            "No asistió" => "bg-warning text-dark",
+                            _ => "bg-secondary"
+                        });
+                    }
+                    <span class="input-group-text">
+                        <span class="badge @badgeClass fw-semibold" style="font-size:0.95rem">@estadoTexto</span>
+                    </span>
+                </div>
+
+                <small class="text-muted">El distintivo refleja el estado seleccionado.</small>
+                <span asp-validation-for="IdEstadoCita" class="text-danger"></span>
+            </div>
+
+            <!-- Motivo -->
+            <div class="mb-3">
+                <label asp-for="Motivo" class="form-label">Motivo</label>
+                <input asp-for="Motivo" class="form-control" />
+                <span asp-validation-for="Motivo" class="text-danger"></span>
+            </div>
+
+            <!-- Observaciones -->
+            <div class="mb-3">
+                <label asp-for="Observaciones" class="form-label">Observaciones</label>
+                <textarea asp-for="Observaciones" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Guardar cambios
+                </button>
+                <a asp-action="Listado" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

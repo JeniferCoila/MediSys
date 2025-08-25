@@ -10,50 +10,66 @@
         </div>
 
         <div class="card-body">
-            <dl class="row mb-0">
-                <dt class="col-sm-3">ID</dt>
-                <dd class="col-sm-9">@Model.IdMedico</dd>
+            <div class="row g-4 align-items-start">
 
-                <dt class="col-sm-3">CMP</dt>
-                <dd class="col-sm-9">@Model.CMP</dd>
+                <!-- Columna Foto -->
+                <div class="col-md-3 text-center">
+                    <img src="@(string.IsNullOrEmpty(Model.FotoUrl)
+                                ? "/uploads/medicos/default-medico.png"
+                                : Model.FotoUrl)"
+                         alt="Foto de @Model.Nombre @Model.Apellido"
+                         class="img-thumbnail"
+                         style="max-width: 250px; height: auto;" />
+                    <div class="text-muted small mt-2">
+                        @(string.IsNullOrEmpty(Model.FotoUrl) ? "Sin foto registrada (placeholder)" : "Foto del médico")
+                    </div>
+                </div>
 
-                <dt class="col-sm-3">Nombre</dt>
-                <dd class="col-sm-9">@Model.Nombre</dd>
+                <!-- Columna Detalles -->
+                <div class="col-md-9">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-3">ID</dt>
+                        <dd class="col-sm-9">@Model.IdMedico</dd>
 
-                <dt class="col-sm-3">Apellido</dt>
-                <dd class="col-sm-9">@Model.Apellido</dd>
+                        <dt class="col-sm-3">CMP</dt>
+                        <dd class="col-sm-9">@Model.CMP</dd>
 
-                <dt class="col-sm-3">Especialidad</dt>
-                <dd class="col-sm-9">
-                    @(!string.IsNullOrWhiteSpace(Model.NombreEspecialidad) ? Model.NombreEspecialidad : "—")
-                </dd>
+                        <dt class="col-sm-3">Nombre</dt>
+                        <dd class="col-sm-9">@Model.Nombre</dd>
 
-                <dt class="col-sm-3">Teléfono</dt>
-                <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Telefono) ? Model.Telefono : "—")</dd>
+                        <dt class="col-sm-3">Apellido</dt>
+                        <dd class="col-sm-9">@Model.Apellido</dd>
 
-                <dt class="col-sm-3">Correo</dt>
-                <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Correo) ? Model.Correo : "—")</dd>
+                        <dt class="col-sm-3">Especialidad</dt>
+                        <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.NombreEspecialidad) ? Model.NombreEspecialidad : "—")</dd>
 
-                <dt class="col-sm-3">Estado</dt>
-                <dd class="col-sm-9">@(Model.FechaBaja.HasValue ? "Baja" : "Activo")</dd>
+                        <dt class="col-sm-3">Teléfono</dt>
+                        <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Telefono) ? Model.Telefono : "—")</dd>
 
-                <dt class="col-sm-3">Fecha de Creación</dt>
-                <dd class="col-sm-9">
-                    @(Model.FechaCreacion.HasValue ? Model.FechaCreacion.Value.ToString("dd/MM/yyyy HH:mm") : "—")
-                </dd>
+                        <dt class="col-sm-3">Correo</dt>
+                        <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Correo) ? Model.Correo : "—")</dd>
 
-                <dt class="col-sm-3">Fecha de Actualización</dt>
-                <dd class="col-sm-9">
-                    @(Model.FechaActualizacion.HasValue ? Model.FechaActualizacion.Value.ToString("dd/MM/yyyy HH:mm") : "Nunca actualizado")
-                </dd>
+                        <dt class="col-sm-3">Estado</dt>
+                        <dd class="col-sm-9">@(Model.FechaBaja.HasValue ? "Baja" : "Activo")</dd>
 
-                <dt class="col-sm-3">Fecha de Baja</dt>
-                <dd class="col-sm-9">
-                    @(Model.FechaBaja.HasValue
-                        ? Model.FechaBaja.Value.ToString("dd/MM/yyyy HH:mm")
-                        : "Activo")
-                </dd>
-            </dl>
+                        <dt class="col-sm-3">Fecha de creación</dt>
+                        <dd class="col-sm-9">
+                            @(Model.FechaCreacion.HasValue ? Model.FechaCreacion.Value.ToString("dd/MM/yyyy HH:mm") : "—")
+                        </dd>
+
+                        <dt class="col-sm-3">Últ. actualización</dt>
+                        <dd class="col-sm-9">
+                            @(Model.FechaActualizacion.HasValue ? Model.FechaActualizacion.Value.ToString("dd/MM/yyyy HH:mm") : "Nunca actualizado")
+                        </dd>
+
+                        <dt class="col-sm-3">Fecha de baja</dt>
+                        <dd class="col-sm-9">
+                            @(Model.FechaBaja.HasValue ? Model.FechaBaja.Value.ToString("dd/MM/yyyy HH:mm") : "—")
+                        </dd>
+                    </dl>
+                </div>
+
+            </div>
         </div>
 
         <div class="card-footer d-flex justify-content-end gap-2">

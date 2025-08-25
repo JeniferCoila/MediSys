@@ -1,0 +1,118 @@
+﻿@model IEnumerable<AplicacionCitasMedicasDB.Models.Medico>
+
+@{
+    ViewData["Title"] = "Listado Médicos Dados de Baja";
+    var filtro = ViewBag.Filtro as string ?? "";
+    int paginaActual = ViewBag.PaginaActual ?? 1;
+    int totalPaginas = ViewBag.TotalPaginas ?? 1;
+    int totalRegistros = ViewBag.TotalRegistros ?? 0;
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="m-0">Médicos Dados de Baja</h2>
+
+</div>
+
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" asp-action="ListadoMedicosBajas" class="row g-2">
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <input type="text" name="filtro" value="@filtro" class="form-control"
+                       placeholder="Buscar por Nombre, Apellido, CMP o Especialidad" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-primary">Buscar</button>
+            </div>
+            <div class="col-auto">
+                <a asp-action="ListadoMedicosBajas" class="btn btn-outline-secondary">Limpiar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().IdMedico)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().CMP)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Nombre)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Apellido)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().NombreEspecialidad)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Telefono)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Correo)</th>
+                <th>@Html.DisplayNameFor(m => m.FirstOrDefault().FechaBaja)</th>
+                <th class="text-center" style="width: 150px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="9" class="text-center text-muted py-4">
+                        No se encontraron médicos dados de baja
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdMedico)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CMP)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Apellido)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NombreEspecialidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Telefono)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Correo)
+                        </td>
+
+                        <td>@item.FechaBaja?.ToString("dd/MM/yyyy")</td>
+
+
+                        <td class="text-center">
+                            <form asp-action="ActivarMedico" method="post" class="d-inline"
+                                  data-restore="¿Restaurar médico?">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.IdMedico" />
+                                <input type="hidden" name="filtro" value="@ViewBag.Filtro" />
+                                <input type="hidden" name="page" value="@ViewBag.PaginaActual" />
+                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-arrow-clockwise"></i> Restaurar
+                                </button>
+                            </form>
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+@{
+    ViewBag.PagerAction = "Listado";
+}
+@await Html.PartialAsync("_PagerWithTotal")

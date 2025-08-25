@@ -1,0 +1,98 @@
+﻿@model AplicacionCitasMedicasDB.Models.Cita
+
+@{
+    ViewData["Title"] = "Detalle de la Cita";
+
+    string estado = Model?.NombreEstado ?? "—";
+    string badge = estado switch
+    {
+        "Programada" => "bg-primary",
+        "Atendida" => "bg-success",
+        "Cancelada" => "bg-danger",
+        "Reprogramada" => "bg-info",
+        "No asistió" => "bg-warning text-dark",
+        _ => "bg-secondary"
+    };
+
+    string F(DateTime? dt) => dt.HasValue ? dt.Value.ToString("yyyy-MM-dd HH:mm") : "—";
+    string D(TimeSpan? t) => t.HasValue ? t.Value.ToString(@"hh\:mm") : "—";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Detalles de la Cita</h2>
+    <a asp-action="Listado" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver al listado
+    </a>
+</div>
+
+<div class="card-header d-flex align-items-center justify-content-between"
+     style="background: linear-gradient(90deg, #0d6efd, #0a58ca); color:white;">
+    <div>
+        <div class="fw-semibold">Cita #@Model.IdCita</div>
+        <div class="small">Creada: @F(Model.FechaCreacion)</div>
+    </div>
+    <span class="badge @badge px-3 py-2 fs-6 fw-semibold shadow-sm"
+          style="border:1px solid rgba(255,255,255,0.7);">
+        @estado
+    </span>
+</div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+
+            <!-- Paciente -->
+            <dt class="col-sm-3">Paciente</dt>
+            <dd class="col-sm-9">
+                <div class="fw-semibold">@Model.PacienteNombreCompleto</div>
+                <div class="text-muted small">DNI: @(Model.PacienteDNI ?? "—")</div>
+            </dd>
+
+            <!-- Médico -->
+            <dt class="col-sm-3">Médico</dt>
+            <dd class="col-sm-9">
+                <div class="fw-semibold">@Model.MedicoNombreCompleto</div>
+                <div class="text-muted small">CMP: @(Model.MedicoCMP ?? "—")</div>
+            </dd>
+
+            <!-- Fecha -->
+            <dt class="col-sm-3">Fecha</dt>
+            <dd class="col-sm-9">@Model.Fecha.ToString("yyyy-MM-dd")</dd>
+
+            <!-- Horario -->
+            <dt class="col-sm-3">Horario</dt>
+            <dd class="col-sm-9">
+                @Model.HoraInicio.ToString(@"hh\:mm")
+                —
+                @((Model.HoraFin ?? Model.HoraInicio.Add(TimeSpan.FromMinutes(30))).ToString(@"hh\:mm"))
+                <span class="text-muted small ms-2">(@Model.DuracionMinutos min)</span>
+            </dd>
+
+            <!-- Estado (texto) -->
+            <dt class="col-sm-3">Estado</dt>
+            <dd class="col-sm-9">@estado</dd>
+
+            <!-- Motivo -->
+            <dt class="col-sm-3">Motivo</dt>
+            <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Motivo) ? Model.Motivo : "—")</dd>
+
+            <!-- Observaciones -->
+            <dt class="col-sm-3">Observaciones</dt>
+            <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Observaciones) ? Model.Observaciones : "—")</dd>
+
+            <!-- Auditoría -->
+            <dt class="col-sm-3">Fecha de Actualización</dt>
+            <dd class="col-sm-9">@F(Model.FechaActualizacion)</dd>
+
+            <dt class="col-sm-3">Fecha de Baja</dt>
+            <dd class="col-sm-9">@F(Model.FechaBaja)</dd>
+
+        </dl>
+    </div>
+
+    <div class="card-footer bg-light d-flex justify-content-between">
+        <a asp-action="Editar" asp-route-id="@Model.IdCita" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Editar
+        </a>
+       @*  <a asp-action="Listado" class="btn btn-outline-secondary">Volver al listado</a> *@
+    </div>
+</div>

@@ -10,6 +10,9 @@ builder.Services.AddScoped<IUsuario, UsuarioDAO>();
 builder.Services.AddScoped<IPaciente, PacienteDAO>();
 builder.Services.AddScoped<IMedico, MedicoDAO>();
 builder.Services.AddScoped<IEspecialidad, EspecialidadDAO>();
+builder.Services.AddScoped<ICita, CitaDAO>();
+builder.Services.AddScoped<IBajasMedico, BajasMedicoDAO>();
+builder.Services.AddScoped<IBajasPaciente, BajasPacienteDAO>();
 
 
 var app = builder.Build();
