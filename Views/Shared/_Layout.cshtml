@@ -45,33 +45,33 @@
                                 {
                                     case "Administrador":
 
-                                        <li class="nav-item">
+                                        <li class="nav-item d-flex align-items-center justify-content-center">
                                             <a class="nav-link text-dark" asp-controller="Admin" asp-action="Menu">Panel de Administración</a>
                                         </li>
 
 
-                                        <li class="nav-item">
+                                        <li class="nav-item d-flex align-items-center justify-content-center">
                                             <a class="nav-link text-dark" asp-controller="Paciente" asp-action="Listado">Pacientes</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item d-flex align-items-center justify-content-center">
                                             <a class="nav-link text-dark" asp-controller="Medico" asp-action="Listado">Médicos</a>
                                         </li>
-                                        <li class="nav-item">
+                                        @* <li class="nav-item">
                                             <a class="nav-link text-dark" href="#">Usuarios</a>
-                                        </li>
+                                        </li> *@
 
 
                                         //Drowdown para gestionar bajas
 
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle text-dark" href="#" id="bajasDropdown" role="button"
+                                        <li class="nav-item dropdown d-flex align-items-center justify-content-center">
+                                            <a class="nav-link dropdown-toggle text-dark" href="javascript:void(0)" id="bajasDropdown" role="button"
                                             data-bs-toggle="dropdown" aria-expanded="false">Gestionar Bajas</a>
                                             <ul class="dropdown-menu" aria-labelledby="bajasDropdown">
                                                 <li><a class="dropdown-item" asp-controller="Admin" asp-action="ListadoMedicosBajas">Médicos Dados de Baja</a></li>
                                                 <li><a class="dropdown-item" asp-controller="Admin" asp-action="ListadoPacientesBajas">Pacientes Dados de Baja</a></li>
                                             </ul>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item d-flex align-items-center justify-content-center">
                                             <a class="nav-link text-dark" asp-controller="Citas" asp-action="Listado">Citas</a>
                                         </li>
                                         break;
@@ -175,7 +175,17 @@
           document.querySelectorAll('.navbar .nav-link').forEach(a=>{
             try{
               const url = new URL(a.href, location.origin);
-              if (path.startsWith(url.pathname.toLowerCase())) a.classList.add('active');
+                 console.log(path, url.pathname.toLowerCase());
+
+                if (url.pathname.toLowerCase() === "void(0)" && /admin\/(listadomedicosbajas|listadopacientesbajas)/.test(path)) {
+                    console.log("aea", a);
+
+                  a.classList.add('active');
+                }
+                  if (path.startsWith(url.pathname.toLowerCase())) {
+                                  console.log("otro if", a);
+                      a.classList.add('active');
+                  }
             }catch{}
           });
         })();

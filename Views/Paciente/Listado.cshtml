@@ -27,14 +27,18 @@
 <div class="card mb-3">
     <div class="card-body">
         <form method="get" asp-action="Listado" class="row g-2">
-            <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-4 position-relative">
                 <input type="text" name="filtro" value="@filtro" class="form-control" placeholder="Buscar por Nombre o DNI" />
+                <a asp-action="Listado"
+                   class="position-absolute top-50 end-0 translate-middle-y me-3 text-muted text-decoration-none"
+                   style="font-size:1.2rem;"
+                   aria-label="Limpiar">
+                    &times;
+                </a>
             </div>
+
             <div class="col-auto">
                 <button type="submit" class="btn btn-outline-primary">Buscar</button>
-            </div>
-            <div class="col-auto">
-                <a asp-action="Listado" class="btn btn-outline-secondary">Limpiar</a>
             </div>
          
         </form>
