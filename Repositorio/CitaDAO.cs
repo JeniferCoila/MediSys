@@ -25,8 +25,9 @@ namespace AplicacionCitasMedicasDB.Repositorio
                 using var cmd = new SqlCommand("usp_citas_agregar", cn, tr)
                 { CommandType = CommandType.StoredProcedure };
 
-                cmd.Parameters.Add("@Fecha", SqlDbType.Date).Value = item.Fecha.Date;
+                cmd.Parameters.Add("@IdPaciente", SqlDbType.Int).Value = item.IdPaciente;
                 cmd.Parameters.Add("@IdMedico", SqlDbType.Int).Value = item.IdMedico;
+                cmd.Parameters.Add("@Fecha", SqlDbType.Date).Value = item.Fecha.Date;
                 cmd.Parameters.Add("@HoraInicio", SqlDbType.Time).Value = item.HoraInicio;
                 cmd.Parameters.Add("@HoraFin", SqlDbType.Time).Value = (object?)item.HoraFin ?? DBNull.Value;
                 cmd.Parameters.Add("@IdEstadoCita", SqlDbType.Int).Value = item.IdEstadoCita;
@@ -106,7 +107,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
             using var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-              
+
                 int i = 0;
                 var cita = new Cita
                 {
