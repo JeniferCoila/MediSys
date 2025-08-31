@@ -235,7 +235,7 @@ VALUES
 -- MARZO 2025 (7) – 2 bajas
 ('33445566','David','Cohen','1980-05-12','M','987654321','david.cohen@example.com','Calle Jerusalén 101',1,'2025-03-04 09:15:00','2025-03-18 16:30:00',NULL),
 ('44556677','Sara','Levy','1992-07-08','F','988765432','sara.levy@example.com','Av. Israel 202',1,'2025-03-09 10:05:00','2025-03-27 18:20:00',NULL),
-('55667788','Yaakov','Goldstein','1975-03-19','M','989876543','yaakov.goldstein@example.com','Jr. Sion 303',0,'2025-03-12 08:45:00','2025-03-20 14:10:00','2025-03-28 09:30:00'),
+('55667788','Yaakov','Goldstein','1975-03-19','M','989876543','yaakov.goldstein@example.com','Jr. Sion 303',1,'2025-03-12 08:45:00','2025-03-20 14:10:00','2025-03-28 09:30:00'),
 ('66778899','Miriam','Katz','1988-11-25','F','990987654','miriam.katz@example.com','Calle Moriah 404',1,'2025-03-15 11:32:00','2025-03-24 17:05:00',NULL),
 ('77889900','Eli','Rosenberg','1995-09-15','M','991098765','eli.rosenberg@example.com','Av. Shalom 505',1,'2025-03-21 09:00:00','2025-03-29 12:40:00',NULL),
 ('88990011','Hannah','Weiss','1983-12-02','F','992109876','hannah.weiss@example.com','Jr. Canaán 606',0,'2025-03-23 15:25:00','2025-03-28 19:10:00','2025-03-30 10:05:00'),
@@ -551,43 +551,43 @@ VALUES
 -- =======================
 -- Ingresos de MAYO (base)
 -- =======================
-('CMP101', 'Eitan',    'Levy',       1,  '987111001', 'eitan.levy@clinica.com',     1, '2025-05-03 09:10:00', '2025-05-18 16:20:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP102', 'Yael',     'Cohen',      2,  '987111002', 'yael.cohen@clinica.com',     1, '2025-05-05 10:05:00', '2025-05-22 17:45:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP103', 'Ariel',    'Mizrahi',    3,  '987111003', 'ariel.mizrahi@clinica.com',  0, '2025-05-07 08:40:00', '2025-06-15 12:30:00', '2025-07-10 10:00:00', '/uploads/medicos/male-medico.png'),
-('CMP104', 'Noa',      'Ben-David',  4,  '987111004', 'noa.bendavid@clinica.com',   1, '2025-05-09 11:20:00', '2025-05-26 18:05:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP105', 'Nadav',    'Katz',       5,  '987111005', 'nadav.katz@clinica.com',     1, '2025-05-10 09:00:00', '2025-05-27 16:10:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP106', 'Tamar',    'Azoulay',    6,  '987111006', 'tamar.azoulay@clinica.com',  1, '2025-05-12 10:15:00', '2025-05-28 17:25:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP107', 'Lior',     'Baruch',     7,  '987111007', 'lior.baruch@clinica.com',    0, '2025-05-13 08:55:00', '2025-07-30 11:40:00', '2025-08-18 09:30:00', '/uploads/medicos/male-medico.png'),
-('CMP108', 'Shira',    'Gabbay',     8,  '987111008', 'shira.gabbay@clinica.com',   1, '2025-05-14 14:05:00', '2025-05-29 19:10:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP109', 'Yonatan',  'Dayan',      9,  '987111009', 'yonatan.dayan@clinica.com',  1, '2025-05-16 09:45:00', '2025-06-02 15:20:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP110', 'Michal',   'Halevi',     10, '987111010', 'michal.halevi@clinica.com',  1, '2025-05-17 08:30:00', '2025-06-01 11:50:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP111', 'Itai',     'Shalev',     11, '987111011', 'itai.shalev@clinica.com',    1, '2025-05-18 10:40:00', '2025-05-30 16:55:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP112', 'Rivka',    'Zohar',      12, '987111012', 'rivka.zohar@clinica.com',    1, '2025-05-19 09:25:00', '2025-06-18 13:35:00', NULL, '/uploads/medicos/female-medico.png'), -- ACTIVADA
-('CMP113', 'Omer',     'Avraham',    13, '987111013', 'omer.avraham@clinica.com',   1, '2025-05-20 11:05:00', '2025-06-05 12:30:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP114', 'Gal',      'Peretz',     14, '987111014', 'gal.peretz@clinica.com',     1, '2025-05-22 09:15:00', '2025-06-07 18:00:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP115', 'Leah',     'Bar-On',     15, '987111015', 'leah.baron@clinica.com',     0, '2025-05-23 10:55:00', '2025-07-22 17:20:00', '2025-08-05 14:15:00', '/uploads/medicos/female-medico.png'),
-('CMP116', 'Amir',     'Goldstein',  16, '987111016', 'amir.goldstein@clinica.com', 1, '2025-05-24 08:45:00', '2025-06-10 16:35:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP117', 'Maya',     'Yehuda',     17, '987111017', 'maya.yehuda@clinica.com',    1, '2025-05-25 09:20:00', '2025-06-12 15:40:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP118', 'Ziv',      'Hadad',      18, '987111018', 'ziv.hadad@clinica.com',      0, '2025-05-26 10:00:00', '2025-07-15 12:10:00', '2025-07-25 16:20:00', '/uploads/medicos/male-medico.png'),
-('CMP119', 'Dana',     'Malka',      19, '987111019', 'dana.malka@clinica.com',     1, '2025-05-27 08:50:00', '2025-06-25 17:45:00', NULL, '/uploads/medicos/female-medico.png'), -- ACTIVADA
-('CMP120', 'Noam',     'Biton',      20, '987111020', 'noam.biton@clinica.com',     1, '2025-05-28 09:35:00', '2025-06-18 18:25:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP101', 'Eitan',    'Levy',       1,  '987111001', 'eitan.levy@medisys.com',     1, '2025-05-03 09:10:00', '2025-05-18 16:20:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP102', 'Yael',     'Cohen',      2,  '987111002', 'yael.cohen@medisys.com',     1, '2025-05-05 10:05:00', '2025-05-22 17:45:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP103', 'Ariel',    'Mizrahi',    3,  '987111003', 'ariel.mizrahi@medisys.com',  0, '2025-05-07 08:40:00', '2025-06-15 12:30:00', '2025-07-10 10:00:00', '/uploads/medicos/male-medico.png'),
+('CMP104', 'Noa',      'Ben-David',  4,  '987111004', 'noa.bendavid@medisys.com',   1, '2025-05-09 11:20:00', '2025-05-26 18:05:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP105', 'Nadav',    'Katz',       5,  '987111005', 'nadav.katz@medisys.com',     1, '2025-05-10 09:00:00', '2025-05-27 16:10:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP106', 'Tamar',    'Azoulay',    6,  '987111006', 'tamar.azoulay@medisys.com',  1, '2025-05-12 10:15:00', '2025-05-28 17:25:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP107', 'Lior',     'Baruch',     7,  '987111007', 'lior.baruch@medisys.com',    0, '2025-05-13 08:55:00', '2025-07-30 11:40:00', '2025-08-18 09:30:00', '/uploads/medicos/male-medico.png'),
+('CMP108', 'Shira',    'Gabbay',     8,  '987111008', 'shira.gabbay@medisys.com',   1, '2025-05-14 14:05:00', '2025-05-29 19:10:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP109', 'Yonatan',  'Dayan',      9,  '987111009', 'yonatan.dayan@medisys.com',  1, '2025-05-16 09:45:00', '2025-06-02 15:20:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP110', 'Michal',   'Halevi',     10, '987111010', 'michal.halevi@medisys.com',  1, '2025-05-17 08:30:00', '2025-06-01 11:50:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP111', 'Itai',     'Shalev',     11, '987111011', 'itai.shalev@medisys.com',    1, '2025-05-18 10:40:00', '2025-05-30 16:55:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP112', 'Rivka',    'Zohar',      12, '987111012', 'rivka.zohar@medisys.com',    1, '2025-05-19 09:25:00', '2025-06-18 13:35:00', NULL, '/uploads/medicos/female-medico.png'), -- ACTIVADA
+('CMP113', 'Omer',     'Avraham',    13, '987111013', 'omer.avraham@medisys.com',   1, '2025-05-20 11:05:00', '2025-06-05 12:30:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP114', 'Gal',      'Peretz',     14, '987111014', 'gal.peretz@medisys.com',     1, '2025-05-22 09:15:00', '2025-06-07 18:00:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP115', 'Leah',     'Bar-On',     15, '987111015', 'leah.baron@medisys.com',     0, '2025-05-23 10:55:00', '2025-07-22 17:20:00', '2025-08-05 14:15:00', '/uploads/medicos/female-medico.png'),
+('CMP116', 'Amir',     'Goldstein',  16, '987111016', 'amir.goldstein@medisys.com', 1, '2025-05-24 08:45:00', '2025-06-10 16:35:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP117', 'Maya',     'Yehuda',     17, '987111017', 'maya.yehuda@medisys.com',    1, '2025-05-25 09:20:00', '2025-06-12 15:40:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP118', 'Ziv',      'Hadad',      18, '987111018', 'ziv.hadad@medisys.com',      0, '2025-05-26 10:00:00', '2025-07-15 12:10:00', '2025-07-25 16:20:00', '/uploads/medicos/male-medico.png'),
+('CMP119', 'Dana',     'Malka',      19, '987111019', 'dana.malka@medisys.com',     1, '2025-05-27 08:50:00', '2025-06-25 17:45:00', NULL, '/uploads/medicos/female-medico.png'), -- ACTIVADA
+('CMP120', 'Noam',     'Biton',      20, '987111020', 'noam.biton@medisys.com',     1, '2025-05-28 09:35:00', '2025-06-18 18:25:00', NULL, '/uploads/medicos/male-medico.png'),
 
 -- =======================================
 -- NUEVOS (junio–agosto) y refuerzos LATINOS
 -- (se mantienen IdEspecialidad; solo cambié nombres/correos y FotoUrl si aplica)
 -- =======================================
-('CMP121', 'Carlos',   'Herrera',   1,  '987121121', 'carlos.herrera@clinica.com',   1, '2025-06-05 10:15:00', '2025-06-20 16:40:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP122', 'Valentina','Rojas',     2,  '987121122', 'valentina.rojas@clinica.com',  1, '2025-06-12 09:40:00', '2025-06-27 18:05:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP123', 'José',     'Ramírez',   3,  '987121123', 'jose.ramirez@clinica.com',     1, '2025-07-01 11:10:00', '2025-07-18 17:30:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP124', 'Camila',   'Fernández', 4,  '987121124', 'camila.fernandez@clinica.com', 1, '2025-07-06 08:55:00', '2025-07-19 14:25:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP125', 'Luis',     'García',    7,  '987121125', 'luis.garcia@clinica.com',      1, '2025-07-14 12:05:00', '2025-07-28 16:50:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP126', 'Paula',    'Navarro',   10, '987121126', 'paula.navarro@clinica.com',    1, '2025-07-22 10:30:00', '2025-07-30 18:10:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP127', 'Yaara',    'Alon',      15, '987121127', 'yaara.alon@clinica.com',       1, '2025-08-03 09:20:00', '2025-08-21 17:15:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP128', 'Shimon',   'Cohen',     18, '987121128', 'shimon.cohen@clinica.com',     1, '2025-08-08 14:40:00', '2025-08-25 19:05:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP129', 'Liat',     'Levi',      1,  '987121129', 'liat.levi@clinica.com',        1, '2025-08-12 11:25:00', '2025-08-27 18:35:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP130', 'Hadar',    'Hadad',     2,  '987121130', 'hadar.hadad@clinica.com',      1, '2025-08-17 10:50:00', '2025-08-29 16:20:00', NULL, '/uploads/medicos/female-medico.png'),
-('CMP131', 'Diego',    'Morales',   5,  '987121131', 'diego.morales@clinica.com',    1, '2025-06-18 13:35:00', '2025-06-28 17:10:00', NULL, '/uploads/medicos/male-medico.png'),
-('CMP132', 'Laura',    'Vargas',    14, '987121132', 'laura.vargas@clinica.com',     1, '2025-06-25 09:05:00', '2025-07-07 12:45:00', NULL, '/uploads/medicos/female-medico.png');
+('CMP121', 'Carlos',   'Herrera',   1,  '987121121', 'carlos.herrera@medisys.com',   1, '2025-06-05 10:15:00', '2025-06-20 16:40:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP122', 'Valentina','Rojas',     2,  '987121122', 'valentina.rojas@medisys.com',  1, '2025-06-12 09:40:00', '2025-06-27 18:05:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP123', 'José',     'Ramírez',   3,  '987121123', 'jose.ramirez@medisys.com',     1, '2025-07-01 11:10:00', '2025-07-18 17:30:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP124', 'Camila',   'Fernández', 4,  '987121124', 'camila.fernandez@medisys.com', 1, '2025-07-06 08:55:00', '2025-07-19 14:25:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP125', 'Luis',     'García',    7,  '987121125', 'luis.garcia@medisys.com',      1, '2025-07-14 12:05:00', '2025-07-28 16:50:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP126', 'Paula',    'Navarro',   10, '987121126', 'paula.navarro@medisys.com',    1, '2025-07-22 10:30:00', '2025-07-30 18:10:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP127', 'Yaara',    'Alon',      15, '987121127', 'yaara.alon@medisys.com',       1, '2025-08-03 09:20:00', '2025-08-21 17:15:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP128', 'Shimon',   'Cohen',     18, '987121128', 'shimon.cohen@medisys.com',     1, '2025-08-08 14:40:00', '2025-08-25 19:05:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP129', 'Liat',     'Levi',      1,  '987121129', 'liat.levi@medisys.com',        1, '2025-08-12 11:25:00', '2025-08-27 18:35:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP130', 'Hadar',    'Hadad',     2,  '987121130', 'hadar.hadad@medisys.com',      1, '2025-08-17 10:50:00', '2025-08-29 16:20:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP131', 'Diego',    'Morales',   5,  '987121131', 'diego.morales@medisys.com',    1, '2025-06-18 13:35:00', '2025-06-28 17:10:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP132', 'Laura',    'Vargas',    14, '987121132', 'laura.vargas@medisys.com',     1, '2025-06-25 09:05:00', '2025-07-07 12:45:00', NULL, '/uploads/medicos/female-medico.png');
 GO
 
 
@@ -1137,53 +1137,62 @@ GO
 
 INSERT INTO dbo.Citas (IdPaciente, IdMedico, Fecha, HoraInicio, HoraFin, IdEstadoCita, Motivo, Observaciones) VALUES
 -- Semana 8 (2025-07-05 a 2025-07-11)
-(1, 1, '2025-07-05', '09:00', '09:30', 2, 'Control general',         'Consulta sin novedades'),
-(2, 2, '2025-07-07', '10:00', '10:30', 3, 'Rinitis alérgica',        'Cancelada por paciente'),
-(3, 3, '2025-07-09', '11:00', '11:30', 2, 'Dermatitis',              'Tratamiento tópico'),
-(4, 4, '2025-07-11', '15:00', '15:30', 4, 'Cefalea',                 'No asistió'),
+(1,  1,  '2025-07-05', '09:00', '09:30', 2, 'Control general',         'Consulta sin novedades'),
+(2,  2,  '2025-07-07', '10:00', '10:30', 3, 'Rinitis alérgica',        'Cancelada por paciente'),
+(3,  23, '2025-07-09', '11:00', '11:30', 2, 'Dermatitis',              'Tratamiento tópico'),
+(4,  4,  '2025-07-11', '15:00', '15:30', 4, 'Cefalea',                 'No asistió'),
 
 -- Semana 7 (2025-07-12 a 2025-07-18)
-(5, 5, '2025-07-12', '09:30', '10:00', 2, 'Gastritis',               'Dieta indicada'),
-(6, 6, '2025-07-14', '10:30', '11:00', 2, 'Dolor lumbar',            'Ejercicios sugeridos'),
-(7, 7, '2025-07-16', '16:00', '16:30', 3, 'Conjuntivitis',           'Cancelada por médico'),
-(8, 8, '2025-07-18', '08:30', '09:00', 4, 'Otalgia',                 'Ausencia sin aviso'),
+(7,  5,  '2025-07-12', '09:30', '10:00', 2, 'Gastritis',               'Dieta indicada'),       -- 5?7
+(9,  6,  '2025-07-14', '10:30', '11:00', 2, 'Dolor lumbar',            'Ejercicios sugeridos'), -- 6?9
+(7,  25, '2025-07-16', '16:00', '16:30', 3, 'Conjuntivitis',           'Cancelada por médico'), -- 7?25
+(10, 8,  '2025-07-18', '08:30', '09:00', 4, 'Otalgia',                 'Ausencia sin aviso'),   -- 8?10
 
 -- Semana 6 (2025-07-19 a 2025-07-25)
-(9, 1, '2025-07-19', '09:00', '09:30', 2, 'Chequeo anual',           'Exámenes solicitados'),
-(10,2, '2025-07-21', '10:00', '10:30', 2, 'Reflujo',                 'Plan de alimentación'),
-(11,3, '2025-07-23', '11:30', '12:00', 3, 'Migraña',                 'Reprogramación solicitada'),
-(12,4, '2025-07-25', '14:00', '14:30', 4, 'Lumbalgia',               'No llegó a tiempo'),
+(9,  1,  '2025-07-19', '09:00', '09:30', 2, 'Chequeo anual',           'Exámenes solicitados'),
+(10, 2,  '2025-07-21', '10:00', '10:30', 2, 'Reflujo',                 'Plan de alimentación'),
+(11, 23, '2025-07-23', '11:30', '12:00', 3, 'Migraña',                 'Reprogramación solicitada'),
+(12, 4,  '2025-07-25', '14:00', '14:30', 4, 'Lumbalgia',               'No llegó a tiempo'),
 
 -- Semana 5 (2025-07-26 a 2025-08-01)
-(13,5, '2025-07-26', '09:00', '09:30', 2, 'Control pediátrico',      'Crecimiento ok'),
-(14,6, '2025-07-28', '10:30', '11:00', 2, 'Rinitis',                 'Antihistamínico'),
-(15,7, '2025-07-30', '12:00', '12:30', 3, 'Irritación ocular',       'Cancelada por teletrabajo'),
-(16,8, '2025-08-01', '15:30', '16:00', 4, 'Dolor abdominal',         'No asistió'),
+(13, 5,  '2025-07-26', '09:00', '09:30', 2, 'Control pediátrico',      'Crecimiento ok'),
+(14, 6,  '2025-07-28', '10:30', '11:00', 2, 'Rinitis',                 'Antihistamínico'),
+(16, 25, '2025-07-30', '12:00', '12:30', 3, 'Irritación ocular',       'Cancelada por teletrabajo'), -- 15?16, 7?25
+(16, 8,  '2025-08-01', '15:30', '16:00', 4, 'Dolor abdominal',         'No asistió'),
 
 -- Semana 4 (2025-08-02 a 2025-08-08)
-(1, 1, '2025-08-02', '09:00', '09:30', 2, 'Control cardiología',     'ECG normal'),
-(2, 2, '2025-08-04', '10:00', '10:30', 2, 'Dermatitis de contacto',  'Mejora visible'),
-(3, 3, '2025-08-06', '11:00', '11:30', 3, 'Trauma rodilla',          'Cancelada (lluvia)'),
-(4, 4, '2025-08-08', '16:00', '16:30', 4, 'Otitis',                  'Ausencia del paciente'),
+(1,  1,  '2025-08-02', '09:00', '09:30', 2, 'Control cardiología',     'ECG normal'),
+(2,  2,  '2025-08-04', '10:00', '10:30', 2, 'Dermatitis de contacto',  'Mejora visible'),
+(3,  23, '2025-08-06', '11:00', '11:30', 3, 'Trauma rodilla',          'Cancelada (lluvia)'),
+(4,  4,  '2025-08-08', '16:00', '16:30', 4, 'Otitis',                  'Ausencia del paciente'),
 
 -- Semana 3 (2025-08-09 a 2025-08-15)
-(5, 5, '2025-08-09', '09:30', '10:00', 2, 'Cefalea tensional',       'Higiene del sueño'),
-(6, 6, '2025-08-11', '10:30', '11:00', 2, 'Chequeo rutina',          'Resultado favorable'),
-(7, 7, '2025-08-13', '12:30', '13:00', 3, 'Gastroenteritis',         'Cancelada por paciente'),
-(8, 8, '2025-08-15', '15:00', '15:30', 4, 'Ojo rojo',                'No asistió'),
+(7,  5,  '2025-08-09', '09:30', '10:00', 2, 'Cefalea tensional',       'Higiene del sueño'),    -- 5?7
+(9,  6,  '2025-08-11', '10:30', '11:00', 2, 'Chequeo rutina',          'Resultado favorable'),  -- 6?9
+(7,  25, '2025-08-13', '12:30', '13:00', 3, 'Gastroenteritis',         'Cancelada por paciente'), -- 7?25
+(10, 8,  '2025-08-15', '15:00', '15:30', 4, 'Ojo rojo',                'No asistió'),           -- 8?10
 
 -- Semana 2 (2025-08-16 a 2025-08-22)
-(9, 1, '2025-08-16', '09:00', '09:30', 2, 'Seguimiento endocrino',   'TSH estable'),
-(10,2, '2025-08-18', '10:00', '10:30', 2, 'Dolor cervical',          'Fisioterapia'),
-(11,3, '2025-08-20', '11:00', '11:30', 3, 'Lesión cutánea',          'Reprogramada'),
-(12,4, '2025-08-22', '16:00', '16:30', 4, 'Rinitis',                 'Ausencia sin aviso'),
+(9,  1,  '2025-08-16', '09:00', '09:30', 2, 'Seguimiento endocrino',   'TSH estable'),
+(10, 2,  '2025-08-18', '10:00', '10:30', 2, 'Dolor cervical',          'Fisioterapia'),
+(11, 23, '2025-08-20', '11:00', '11:30', 3, 'Lesión cutánea',          'Reprogramada'),
+(12, 4,  '2025-08-22', '16:00', '16:30', 4, 'Rinitis',                 'Ausencia sin aviso'),
 
 -- Semana 1 (2025-08-23 a 2025-08-30)
-(13,5, '2025-08-24', '09:00', '09:30', 2, 'Control general',         'Consulta resuelta'),
-(14,6, '2025-08-26', '10:00', '10:30', 2, 'Dolor lumbar',            'Ejercicios indicados'),
-(15,7, '2025-08-28', '11:00', '11:30', 3, 'Rinitis alérgica',        'Cancelada por paciente'),
-(16,8, '2025-08-30', '15:00', '15:30', 1, 'Chequeo pre-viaje',       'Programada hoy');
+(13, 5,  '2025-08-24', '09:00', '09:30', 2, 'Control general',         'Consulta resuelta'),
+(14, 6,  '2025-08-26', '10:00', '10:30', 2, 'Dolor lumbar',            'Ejercicios indicados'),
+(16, 25, '2025-08-28', '11:00', '11:30', 3, 'Rinitis alérgica',        'Cancelada por paciente'), -- 15?16, 7?25
+(16, 8,  '2025-08-30', '15:00', '15:30', 1, 'Chequeo pre-viaje',       'Programada hoy'),
+
+-- 31 de agosto de 2025 (5)
+(1,  1,  '2025-08-31', '08:30', '09:00', 1, 'Control general',         'Programada'),
+(2,  2,  '2025-08-31', '09:00', '09:30', 1, 'Revisión dermatológica',  'Programada'),
+(3,  23, '2025-08-31', '09:30', '10:00', 1, 'Chequeo neurológico',     'Programada'),
+(4,  4,  '2025-08-31', '10:00', '10:30', 1, 'Consulta de rutina',      'Programada'),
+(7,  5,  '2025-08-31', '10:30', '11:00', 1, 'Seguimiento',             'Programada');           -- 5?7
+
 GO
+
 
 INSERT INTO Pacientes
   (DNI, Nombre, Apellido, FechaNacimiento, Genero, Telefono, Correo, Direccion, Estado,
@@ -1234,6 +1243,8 @@ VALUES
 ('98210028','Gabriel','Molina','1990-07-13','M','932200028','gabriel.molina28@example.com','Calle Ancash 828',1,'2025-08-04 10:45:00','2025-08-18 16:25:00',NULL),
 ('98210029','Carla','Espinoza','1993-02-21','F','932200029','carla.espinoza29@example.com','Av. Los Olivos 929',0,'2025-08-10 09:20:00','2025-08-20 14:50:00','2025-08-26 09:40:00'),
 ('98210030','Mauricio','Palacios','1981-09-09','M','932200030','mauricio.palacios30@example.com','Jr. Cuzco 030',1,'2025-08-22 11:15:00','2025-08-29 18:35:00',NULL);
+
+
 GO
 
 /* EJECUCION DE PROCEDURE DE MEDICOS QUE FUERON DADOS DE BAJA */
