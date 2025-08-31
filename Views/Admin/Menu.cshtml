@@ -1,17 +1,72 @@
-﻿@{
+﻿@using System.Text.Json
+@using AplicacionCitasMedicasDB.Models.ViewModels
+@model DashboardVm
+
+@{
     ViewData["Title"] = "Menú del Administrador";
     var user = Context.Session.GetString("username");
 }
 
 <h2>Bienvenido, @user</h2>
-<h4>Panel de administración</h4>
 
-<ul>
-    <li><a href="#">Gestionar Usuarios</a></li>
-    <li><a asp-controller="Paciente" asp-action="Listado">Gestionar Pacientes</a></li>
-    <li><a asp-controller ="Medico" asp-action="Listado">Gestionar Médicos</a></li>
-    <li><a asp-controller="Admin" asp-action="ListadoMedicosBajas"  >Gestionar Medicos Eliminados</a></li>
-    <li><a asp-controller="Admin" asp-action="ListadoPacientesBajas">Gestionar Pacientes Eliminados</a></li>
-    <li><a asp-controller="Citas" asp-action="Listado">Gestionar Citas</a></li>
 
-</ul>
+<hr class="my-3" />
+
+<!-- KPIs -->
+<div class="row g-3 mb-3">
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Pacientes activos</div><div class="fs-2 fw-semibold">@Model.PacientesActivos</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Médicos activos</div><div class="fs-2 fw-semibold">@Model.MedicosActivos</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Citas hoy</div><div class="fs-2 fw-semibold">@Model.CitasHoy</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted">No-show (30 días)</div><div class="fs-2 fw-semibold">@Model.NoShowPct30d.ToString("0.0")%</div></div></div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="card p-3 h-100">
+            <h5 class="mb-3">Citas por especialidad (últ. 8 semanas)</h5>
+            <canvas id="chartEsp" height="190"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card p-3 h-100">
+            <h5 class="mb-3">Altas / Bajas de pacientes</h5>
+            <canvas id="chartAltasBajas" height="190"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<div class="row g-3 mt-2">
+    <div class="col-lg-7">
+        <!-- tus gráficos -->
+    </div>
+    <div class="col-lg-">
+        @await Html.PartialAsync("_ActividadMedicos", Model.ActividadMedicos)
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const labelsSem = @Html.Raw(JsonSerializer.Serialize(Model.LabelsSemanas));
+        const seriesEsp = @Html.Raw(JsonSerializer.Serialize(Model.CitasPorEspecialidad));
+        const labelsMes = @Html.Raw(JsonSerializer.Serialize(Model.LabelsMeses));
+        const altas     = @Html.Raw(JsonSerializer.Serialize(Model.Altas));
+        const bajas     = @Html.Raw(JsonSerializer.Serialize(Model.Bajas));
+
+        new Chart(document.getElementById('chartEsp'), {
+          type: 'bar',
+          data: { labels: labelsSem, datasets: seriesEsp.map(s => ({ label: s.label, data: s.data })) },
+          options: { responsive:true, plugins:{ legend:{ position:'bottom' } }, scales:{ x:{ stacked:true }, y:{ stacked:true, beginAtZero:true } } }
+        });
+
+        new Chart(document.getElementById('chartAltasBajas'), {
+          type: 'line',
+          data: { labels: labelsMes, datasets:[
+            { label:'Altas', data: altas, tension:.3 },
+            { label:'Bajas', data: bajas, tension:.3 }
+          ]},
+          options: { responsive:true, plugins:{ legend:{ position:'bottom' } } }
+        });
+    </script>
+
+}

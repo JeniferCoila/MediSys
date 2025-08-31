@@ -70,18 +70,30 @@ namespace AplicacionCitasMedicasDB.Repositorio
                     cn.Open();
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
+                        int Ord(string col) { try { return dr.GetOrdinal(col); } catch { return -1; } }  // NUEVO
+                        string? S(string col) { var i = Ord(col); return (i < 0 || dr.IsDBNull(i)) ? null : dr.GetString(i); }  // NUEVO
+                        DateTime? D(string col) { var i = Ord(col); return (i < 0 || dr.IsDBNull(i)) ? (DateTime?)null : dr.GetDateTime(i); }  // NUEVO
+                        int I(string col) { var i = Ord(col); return (i < 0 || dr.IsDBNull(i)) ? 0 : dr.GetInt32(i); }  // NUEVO
+
                         while (dr.Read())
                         {
                             listaMedicosBajas.Add(new Medico
                             {
-                                IdMedico = dr.GetInt32(0),
-                                CMP = dr.GetString(1),
-                                Nombre = dr.GetString(2),
-                                Apellido = dr.GetString(3),
-                                NombreEspecialidad = dr.IsDBNull(4) ? null : dr.GetString(4),
-                                Telefono = dr.IsDBNull(5) ? null : dr.GetString(5),
-                                Correo = dr.IsDBNull(6) ? null : dr.GetString(6),
-                                FechaBaja = dr.IsDBNull(7) ? null : dr.GetDateTime(7)
+                                IdMedico = I("IdMedico"),                 
+                                CMP = S("CMP") ?? "",                
+                                Nombre = S("Nombre") ?? "",             
+                                Apellido = S("Apellido") ?? "",           
+
+                                IdEspecialidad = I("IdEspecialidad"),          
+                                NombreEspecialidad = S("NombreEspecialidad"),       
+
+                                Telefono = S("Telefono"),                 
+                                Correo = S("Correo"),                   
+                                FotoUrl = S("FotoUrl"),                 
+
+                                FechaCreacion = D("FechaCreacion"),            
+                                FechaActualizacion = D("FechaActualizacion"),       
+                                FechaBaja = D("FechaBaja")                 
                             });
                         }
                     }
@@ -105,23 +117,36 @@ namespace AplicacionCitasMedicasDB.Repositorio
                     {
                         if (dr.Read())
                         {
+                            // NUEVO: helpers por nombre de columna
+                            int Ord(string col) { try { return dr.GetOrdinal(col); } catch { return -1; } }   // NUEVO
+                            string? S(string col) { var i = Ord(col); return (i < 0 || dr.IsDBNull(i)) ? null : dr.GetString(i); }  // NUEVO
+                            DateTime? D(string col) { var i = Ord(col); return (i < 0 || dr.IsDBNull(i)) ? (DateTime?)null : dr.GetDateTime(i); } // NUEVO
+                            int I(string col) { var i = Ord(col); return (i < 0 || dr.IsDBNull(i)) ? 0 : dr.GetInt32(i); }  // NUEVO
+
                             medicoBaja = new Medico
                             {
-                                IdMedico = dr.GetInt32(0),
-                                CMP = dr.GetString(1),
-                                Nombre = dr.GetString(2),
-                                Apellido = dr.GetString(3),
-                                NombreEspecialidad = dr.IsDBNull(4) ? null : dr.GetString(4),
-                                Telefono = dr.IsDBNull(5) ? null : dr.GetString(5),
-                                Correo = dr.IsDBNull(6) ? null : dr.GetString(6),
-                                FechaBaja = dr.IsDBNull(7) ? null : dr.GetDateTime(7),
+                                IdMedico = I("IdMedico"),            // CAMBIO: antes dr.GetInt32(0)
+                                CMP = S("CMP") ?? "",           // CAMBIO: antes dr.GetString(1)
+                                Nombre = S("Nombre") ?? "",        // CAMBIO: antes dr.GetString(2)
+                                Apellido = S("Apellido") ?? "",      // CAMBIO: antes dr.GetString(3)
+
+                                IdEspecialidad = I("IdEspecialidad"),      // NUEVO: antes no se mapeaba
+                                NombreEspecialidad = S("NombreEspecialidad"),  // CAMBIO: antes índice 4
+
+                                Telefono = S("Telefono"),            // CAMBIO: antes índice 5
+                                Correo = S("Correo"),              // CAMBIO: antes índice 6
+                                FotoUrl = S("FotoUrl"),             // NUEVO: avatar en bajas
+
+                                FechaCreacion = D("FechaCreacion"),       // NUEVO: auditoría
+                                FechaActualizacion = D("FechaActualizacion"),  // NUEVO: auditoría
+                                FechaBaja = D("FechaBaja")            // CAMBIO: antes índice 7
                             };
                         }
                     }
+                    }
                 }
-            }
 
-            return medicoBaja;
+                return medicoBaja;
         }
   
     }

@@ -25,6 +25,7 @@ html {
 
 body {
     background: var(--bg);
+    margin-bottom: 60px;
 }
 
 main {
