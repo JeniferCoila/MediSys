@@ -95,6 +95,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
             using var dr = cmd.ExecuteReader();
 
             string? S(string col) => dr.IsDBNull(dr.GetOrdinal(col)) ? null : dr.GetString(dr.GetOrdinal(col));
+            DateTime? D(string col) => dr.IsDBNull(dr.GetOrdinal(col)) ? (DateTime?)null : dr.GetDateTime(dr.GetOrdinal(col));
 
             while (dr.Read())
             {
@@ -108,7 +109,11 @@ namespace AplicacionCitasMedicasDB.Repositorio
                     NombreEspecialidad = S("NombreEspecialidad"),
                     Telefono = S("Telefono"),
                     Correo = S("Correo"),
-                    FotoUrl = S("FotoUrl")
+                    FotoUrl = S("FotoUrl"),
+                    FechaCreacion = D("FechaCreacion"),
+                    FechaActualizacion = D("FechaActualizacion"),
+                    FechaBaja = D("FechaBaja")
+
                 });
             }
             return lista;

@@ -125,8 +125,13 @@ namespace AplicacionCitasMedicasDB.Repositorio
                                 Genero = dr.IsDBNull(5) ? null : dr.GetString(5),
                                 Telefono = dr.IsDBNull(6) ? null : dr.GetString(6),
                                 Correo = dr.IsDBNull(7) ? null : dr.GetString(7),
-                                Direccion = dr.IsDBNull(8) ? null : dr.GetString(8)
+                                Direccion = dr.IsDBNull(8) ? null : dr.GetString(8),
+                                FechaCreacion = (dr.FieldCount > 9 && !dr.IsDBNull(9)) ? dr.GetDateTime(9) : default,
+                                FechaActualizacion = (dr.FieldCount > 10 && !dr.IsDBNull(10)) ? dr.GetDateTime(10) : (DateTime?)null,
+                                FechaBaja = (dr.FieldCount > 11 && !dr.IsDBNull(11)) ? dr.GetDateTime(11) : (DateTime?)null
                             });
+
+
                         }
                     }
                 }
@@ -167,6 +172,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
                             paciente.FechaActualizacion = dr.GetDateTime(10);
                         if (dr.FieldCount > 11 && !dr.IsDBNull(11))
                             paciente.FechaBaja = dr.GetDateTime(11);
+
                     }
                 }
             }

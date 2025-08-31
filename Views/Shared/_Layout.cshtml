@@ -128,9 +128,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @* chart.js *@
+    <script src="~/lib/chartjs/dist/chart.umd.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
     <script>
         // Confirmación para cualquier <form data-confirm="...">
         document.addEventListener('submit', function (e) {
@@ -175,17 +178,13 @@
           document.querySelectorAll('.navbar .nav-link').forEach(a=>{
             try{
               const url = new URL(a.href, location.origin);
-                 console.log(path, url.pathname.toLowerCase());
 
                 if (url.pathname.toLowerCase() === "void(0)" && /admin\/(listadomedicosbajas|listadopacientesbajas)/.test(path)) {
-                    console.log("aea", a);
-
                   a.classList.add('active');
                 }
-                  if (path.startsWith(url.pathname.toLowerCase())) {
-                                  console.log("otro if", a);
-                      a.classList.add('active');
-                  }
+                if (path.startsWith(url.pathname.toLowerCase())) {
+                    a.classList.add('active');
+                }
             }catch{}
           });
         })();

@@ -3,6 +3,7 @@ using AplicacionCitasMedicasDB.Models;
 using AplicacionCitasMedicasDB.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace AplicacionCitasMedicasDB.Controllers
 {
 
@@ -12,24 +13,30 @@ namespace AplicacionCitasMedicasDB.Controllers
         private readonly IBajasMedico _bajasMedicoDAO;
         private readonly IBajasPaciente _bajasPacienteDAO;
 
+        private readonly IDashboardDAO _dashboardDAO;
+
+
         private const int PageSize = 15;
 
-        public AdminController(IBajasMedico bajasMedicoDAO, IBajasPaciente bajasPacienteDAO)
+        public AdminController(
+            IBajasMedico bajasMedicoDAO,
+            IBajasPaciente bajasPacienteDAO,
+            IDashboardDAO dashboardDAO)
         {
             _bajasMedicoDAO = bajasMedicoDAO;
             _bajasPacienteDAO = bajasPacienteDAO;
-        }
+            _dashboardDAO = dashboardDAO;
 
+        }
 
         public IActionResult Menu()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
                 return RedirectToAction("Index", "Login");
+            var vm = _dashboardDAO.Build();
 
-            return View();
+            return View(vm);
         }
-
-
 
         /* VISTA PARA LISTAR MEDICOS DADOS DE BAJA */
         [HttpGet]

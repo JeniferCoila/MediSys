@@ -84,5 +84,8 @@ namespace AplicacionCitasMedicasDB.Models
         [Display(Name = "Duración (min)")]
         public int DuracionMinutos =>
             (int)((HoraFin ?? HoraInicio.Add(TimeSpan.FromMinutes(30))) - HoraInicio).TotalMinutes;
+
+        [NotMapped] public string? EspecialidadNombre { get; set; }
+        [NotMapped] public string? HoraTexto => HoraInicio.ToString(@"hh\:mm");
     }
 }
