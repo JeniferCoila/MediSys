@@ -1,28 +1,18 @@
 ﻿namespace AplicacionCitasMedicasDB.Models.ViewModels
 {
-    public class Serie
-    {
-        public string label { get; set; } = "";
-        public int[] data { get; set; } = Array.Empty<int>();
-    }
+    public record KpisVm(int PacientesActivos, int MedicosActivos, int CitasHoy, double NoShowPct30d);
+    public record SerieVm(string Label, int[] Data);
+    public record EspecialidadesChartVm(string[] LabelsSemanas, IReadOnlyList<SerieVm> Series);
+    public record AltasBajasChartVm(string[] LabelsMeses, int[] Altas, int[] Bajas);
+    public record CitaResumenVm(string Hora, string Doctor, string Especialidad, string Paciente, string Estado);
+    public record MedicoActividadVm(int IdMedico, string Nombre, string? FotoUrl, string Tipo, string FechaTexto);
 
     public class DashboardVm
     {
-        // KPIs
-        public int PacientesActivos { get; set; }
-        public int MedicosActivos { get; set; }
-        public int CitasHoy { get; set; }
-        public double NoShowPct30d { get; set; }
-
-        // Gráfica: Citas por especialidad (últimas 8 semanas)
-        public string[] LabelsSemanas { get; set; } = Array.Empty<string>();
-        public List<Serie> CitasPorEspecialidad { get; set; } = new();
-
-        // Gráfica: Altas/Bajas de pacientes (últimos 6 meses)
-        public string[] LabelsMeses { get; set; } = Array.Empty<string>();
-        public int[] Altas { get; set; } = Array.Empty<int>();
-        public int[] Bajas { get; set; } = Array.Empty<int>();
-        public List<Medico> ActividadMedicos { get; set; } = new();
-
+        public KpisVm Kpis { get; init; } = new(0, 0, 0, 0);
+        public EspecialidadesChartVm Especialidades { get; init; } = new(Array.Empty<string>(), Array.Empty<SerieVm>());
+        public AltasBajasChartVm AltasBajas { get; init; } = new(Array.Empty<string>(), Array.Empty<int>(), Array.Empty<int>());
+        public IReadOnlyList<CitaResumenVm> CitasHoy { get; init; } = Array.Empty<CitaResumenVm>();
+        public IReadOnlyList<MedicoActividadVm> ActividadMedicos { get; init; } = Array.Empty<MedicoActividadVm>();
     }
 }

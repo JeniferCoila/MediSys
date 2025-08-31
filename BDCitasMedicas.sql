@@ -548,35 +548,48 @@ GO
 INSERT INTO Medicos
 (CMP, Nombre, Apellido, IdEspecialidad, Telefono, Correo, Estado, FechaCreacion, FechaActualizacion, FechaBaja, FotoUrl)
 VALUES
--- Especialidades 1–20 (mínimo 1 c/u)
-('CMP101','Eitan','Levy',1,'987111001','eitan.levy@medisys.com',1,'2025-05-03 09:10:00','2025-05-18 16:20:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP102','Yael','Cohen',2,'987111002','yael.cohen@medisys.com',1,'2025-05-05 10:05:00','2025-05-22 17:45:00',NULL,'/uploads/medicos/female-medico.png'),
-('CMP103','Ariel','Mizrahi',3,'987111003','ariel.mizrahi@medisys.com',0,'2025-05-07 08:40:00','2025-06-15 12:30:00','2025-07-10 10:00:00','/uploads/medicos/male-medico.png'),
-('CMP104','Noa','Ben-David',4,'987111004','noa.bendavid@medisys.com',1,'2025-05-09 11:20:00','2025-05-26 18:05:00',NULL,'/uploads/medicos/female-medico.png'),
-('CMP105','Nadav','Katz',5,'987111005','nadav.katz@medisys.com',1,'2025-05-10 09:00:00','2025-05-27 16:10:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP106','Tamar','Azoulay',6,'987111006','tamar.azoulay@medisys.com',1,'2025-05-12 10:15:00','2025-05-28 17:25:00',NULL,'/uploads/medicos/female-medico.png'),
-('CMP107','Lior','Baruch',7,'987111007','lior.baruch@medisys.com',0,'2025-05-13 08:55:00','2025-07-30 11:40:00','2025-08-18 09:30:00','/uploads/medicos/male-medico.png'),
-('CMP108','Shira','Gabbay',8,'987111008','shira.gabbay@medisys.com',1,'2025-05-14 14:05:00','2025-05-29 19:10:00',NULL,'/uploads/medicos/female-medico.png'),
-('CMP109','Yonatan','Dayan',9,'987111009','yonatan.dayan@medisys.com',1,'2025-05-16 09:45:00','2025-06-02 15:20:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP110','Michal','Halevi',10,'987111010','michal.halevi@medisys.com',1,'2025-05-17 08:30:00','2025-06-01 11:50:00',NULL,'/uploads/medicos/female-medico.png'),
-('CMP111','Itai','Shalev',11,'987111011','itai.shalev@medisys.com',1,'2025-05-18 10:40:00','2025-05-30 16:55:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP112','Rivka','Zohar',12,'987111012','rivka.zohar@medisys.com',0,'2025-05-19 09:25:00','2025-06-18 13:35:00','2025-06-22 11:00:00','/uploads/medicos/female-medico.png'),
-('CMP113','Omer','Avraham',13,'987111013','omer.avraham@medisys.com',1,'2025-05-20 11:05:00','2025-06-05 12:30:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP114','Gal','Peretz',14,'987111014','gal.peretz@medisys.com',1,'2025-05-22 09:15:00','2025-06-07 18:00:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP115','Leah','Bar-On',15,'987111015','leah.baron@medisys.com',0,'2025-05-23 10:55:00','2025-07-22 17:20:00','2025-08-05 14:15:00','/uploads/medicos/female-medico.png'),
-('CMP116','Amir','Goldstein',16,'987111016','amir.goldstein@medisys.com',1,'2025-05-24 08:45:00','2025-06-10 16:35:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP117','Maya','Yehuda',17,'987111017','maya.yehuda@medisys.com',1,'2025-05-25 09:20:00','2025-06-12 15:40:00',NULL,'/uploads/medicos/female-medico.png'),
-('CMP118','Ziv','Hadad',18,'987111018','ziv.hadad@medisys.com',0,'2025-05-26 10:00:00','2025-07-15 12:10:00','2025-07-25 16:20:00','/uploads/medicos/male-medico.png'),
-('CMP119','Dana','Malka',19,'987111019','dana.malka@medisys.com',0,'2025-05-27 08:50:00','2025-06-25 17:45:00','2025-06-30 09:45:00','/uploads/medicos/female-medico.png'),
-('CMP120','Noam','Biton',20,'987111020','noam.biton@medisys.com',1,'2025-05-28 09:35:00','2025-06-18 18:25:00',NULL,'/uploads/medicos/male-medico.png'),
+-- =======================
+-- Ingresos de MAYO (base)
+-- =======================
+('CMP101', 'Eitan',    'Levy',       1,  '987111001', 'eitan.levy@clinica.com',     1, '2025-05-03 09:10:00', '2025-05-18 16:20:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP102', 'Yael',     'Cohen',      2,  '987111002', 'yael.cohen@clinica.com',     1, '2025-05-05 10:05:00', '2025-05-22 17:45:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP103', 'Ariel',    'Mizrahi',    3,  '987111003', 'ariel.mizrahi@clinica.com',  0, '2025-05-07 08:40:00', '2025-06-15 12:30:00', '2025-07-10 10:00:00', '/uploads/medicos/male-medico.png'),
+('CMP104', 'Noa',      'Ben-David',  4,  '987111004', 'noa.bendavid@clinica.com',   1, '2025-05-09 11:20:00', '2025-05-26 18:05:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP105', 'Nadav',    'Katz',       5,  '987111005', 'nadav.katz@clinica.com',     1, '2025-05-10 09:00:00', '2025-05-27 16:10:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP106', 'Tamar',    'Azoulay',    6,  '987111006', 'tamar.azoulay@clinica.com',  1, '2025-05-12 10:15:00', '2025-05-28 17:25:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP107', 'Lior',     'Baruch',     7,  '987111007', 'lior.baruch@clinica.com',    0, '2025-05-13 08:55:00', '2025-07-30 11:40:00', '2025-08-18 09:30:00', '/uploads/medicos/male-medico.png'),
+('CMP108', 'Shira',    'Gabbay',     8,  '987111008', 'shira.gabbay@clinica.com',   1, '2025-05-14 14:05:00', '2025-05-29 19:10:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP109', 'Yonatan',  'Dayan',      9,  '987111009', 'yonatan.dayan@clinica.com',  1, '2025-05-16 09:45:00', '2025-06-02 15:20:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP110', 'Michal',   'Halevi',     10, '987111010', 'michal.halevi@clinica.com',  1, '2025-05-17 08:30:00', '2025-06-01 11:50:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP111', 'Itai',     'Shalev',     11, '987111011', 'itai.shalev@clinica.com',    1, '2025-05-18 10:40:00', '2025-05-30 16:55:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP112', 'Rivka',    'Zohar',      12, '987111012', 'rivka.zohar@clinica.com',    1, '2025-05-19 09:25:00', '2025-06-18 13:35:00', NULL, '/uploads/medicos/female-medico.png'), -- ACTIVADA
+('CMP113', 'Omer',     'Avraham',    13, '987111013', 'omer.avraham@clinica.com',   1, '2025-05-20 11:05:00', '2025-06-05 12:30:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP114', 'Gal',      'Peretz',     14, '987111014', 'gal.peretz@clinica.com',     1, '2025-05-22 09:15:00', '2025-06-07 18:00:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP115', 'Leah',     'Bar-On',     15, '987111015', 'leah.baron@clinica.com',     0, '2025-05-23 10:55:00', '2025-07-22 17:20:00', '2025-08-05 14:15:00', '/uploads/medicos/female-medico.png'),
+('CMP116', 'Amir',     'Goldstein',  16, '987111016', 'amir.goldstein@clinica.com', 1, '2025-05-24 08:45:00', '2025-06-10 16:35:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP117', 'Maya',     'Yehuda',     17, '987111017', 'maya.yehuda@clinica.com',    1, '2025-05-25 09:20:00', '2025-06-12 15:40:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP118', 'Ziv',      'Hadad',      18, '987111018', 'ziv.hadad@clinica.com',      0, '2025-05-26 10:00:00', '2025-07-15 12:10:00', '2025-07-25 16:20:00', '/uploads/medicos/male-medico.png'),
+('CMP119', 'Dana',     'Malka',      19, '987111019', 'dana.malka@clinica.com',     1, '2025-05-27 08:50:00', '2025-06-25 17:45:00', NULL, '/uploads/medicos/female-medico.png'), -- ACTIVADA
+('CMP120', 'Noam',     'Biton',      20, '987111020', 'noam.biton@clinica.com',     1, '2025-05-28 09:35:00', '2025-06-18 18:25:00', NULL, '/uploads/medicos/male-medico.png'),
 
--- 5 extras en especialidades comunes (1–5) con nombres latinos
-('CMP133','Carlos','Herrera',1,'987131001','carlos.herrera@medisys.com',1,'2025-06-03 09:20:00','2025-06-18 16:30:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP134','Valentina','Rojas',2,'987131002','valentina.rojas@medisys.com',1,'2025-06-06 10:05:00','2025-06-22 18:10:00',NULL,'/uploads/medicos/female-medico.png'),
-('CMP135','José','Ramírez',3,'987131003','jose.ramirez@medisys.com',1,'2025-06-09 08:50:00','2025-06-25 15:40:00',NULL,'/uploads/medicos/male-medico.png'),
-('CMP136','Camila','Fernández',4,'987131004','camila.fernandez@medisys.com',1,'2025-06-12 11:15:00','2025-06-28 17:25:00',NULL,'/uploads/medicos/female-medico.png'),
-('CMP137','Luis','García',5,'987131005','luis.garcia@medisys.com',1,'2025-06-15 09:05:00','2025-06-30 12:55:00',NULL,'/uploads/medicos/male-medico.png');
+-- =======================================
+-- NUEVOS (junio–agosto) y refuerzos LATINOS
+-- (se mantienen IdEspecialidad; solo cambié nombres/correos y FotoUrl si aplica)
+-- =======================================
+('CMP121', 'Carlos',   'Herrera',   1,  '987121121', 'carlos.herrera@clinica.com',   1, '2025-06-05 10:15:00', '2025-06-20 16:40:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP122', 'Valentina','Rojas',     2,  '987121122', 'valentina.rojas@clinica.com',  1, '2025-06-12 09:40:00', '2025-06-27 18:05:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP123', 'José',     'Ramírez',   3,  '987121123', 'jose.ramirez@clinica.com',     1, '2025-07-01 11:10:00', '2025-07-18 17:30:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP124', 'Camila',   'Fernández', 4,  '987121124', 'camila.fernandez@clinica.com', 1, '2025-07-06 08:55:00', '2025-07-19 14:25:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP125', 'Luis',     'García',    7,  '987121125', 'luis.garcia@clinica.com',      1, '2025-07-14 12:05:00', '2025-07-28 16:50:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP126', 'Paula',    'Navarro',   10, '987121126', 'paula.navarro@clinica.com',    1, '2025-07-22 10:30:00', '2025-07-30 18:10:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP127', 'Yaara',    'Alon',      15, '987121127', 'yaara.alon@clinica.com',       1, '2025-08-03 09:20:00', '2025-08-21 17:15:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP128', 'Shimon',   'Cohen',     18, '987121128', 'shimon.cohen@clinica.com',     1, '2025-08-08 14:40:00', '2025-08-25 19:05:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP129', 'Liat',     'Levi',      1,  '987121129', 'liat.levi@clinica.com',        1, '2025-08-12 11:25:00', '2025-08-27 18:35:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP130', 'Hadar',    'Hadad',     2,  '987121130', 'hadar.hadad@clinica.com',      1, '2025-08-17 10:50:00', '2025-08-29 16:20:00', NULL, '/uploads/medicos/female-medico.png'),
+('CMP131', 'Diego',    'Morales',   5,  '987121131', 'diego.morales@clinica.com',    1, '2025-06-18 13:35:00', '2025-06-28 17:10:00', NULL, '/uploads/medicos/male-medico.png'),
+('CMP132', 'Laura',    'Vargas',    14, '987121132', 'laura.vargas@clinica.com',     1, '2025-06-25 09:05:00', '2025-07-07 12:45:00', NULL, '/uploads/medicos/female-medico.png');
 GO
+
 
 
 

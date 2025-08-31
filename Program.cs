@@ -13,6 +13,7 @@ builder.Services.AddScoped<IEspecialidad, EspecialidadDAO>();
 builder.Services.AddScoped<ICita, CitaDAO>();
 builder.Services.AddScoped<IBajasMedico, BajasMedicoDAO>();
 builder.Services.AddScoped<IBajasPaciente, BajasPacienteDAO>();
+builder.Services.AddScoped<IDashboardDAO, DashboardDAO>();
 
 
 var app = builder.Build();

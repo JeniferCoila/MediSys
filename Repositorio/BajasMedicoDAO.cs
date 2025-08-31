@@ -85,7 +85,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
                                 Apellido = S("Apellido") ?? "",           
 
                                 IdEspecialidad = I("IdEspecialidad"),          
-                                NombreEspecialidad = S("NombreEspecialidad"),       
+                                NombreEspecialidad = S("Especialidad"),       
 
                                 Telefono = S("Telefono"),                 
                                 Correo = S("Correo"),                   
@@ -131,7 +131,7 @@ namespace AplicacionCitasMedicasDB.Repositorio
                                 Apellido = S("Apellido") ?? "",      // CAMBIO: antes dr.GetString(3)
 
                                 IdEspecialidad = I("IdEspecialidad"),      // NUEVO: antes no se mapeaba
-                                NombreEspecialidad = S("NombreEspecialidad"),  // CAMBIO: antes índice 4
+                                NombreEspecialidad = S("Especialidad"),  // CAMBIO: antes índice 4
 
                                 Telefono = S("Telefono"),            // CAMBIO: antes índice 5
                                 Correo = S("Correo"),              // CAMBIO: antes índice 6

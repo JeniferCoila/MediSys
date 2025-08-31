@@ -8,16 +8,14 @@
 }
 
 <h2>Bienvenido, @user</h2>
-
-
 <hr class="my-3" />
 
 <!-- KPIs -->
 <div class="row g-3 mb-3">
-    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Pacientes activos</div><div class="fs-2 fw-semibold">@Model.PacientesActivos</div></div></div>
-    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Médicos activos</div><div class="fs-2 fw-semibold">@Model.MedicosActivos</div></div></div>
-    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Citas hoy</div><div class="fs-2 fw-semibold">@Model.CitasHoy</div></div></div>
-    <div class="col-md-3"><div class="card p-3"><div class="text-muted">No-show (30 días)</div><div class="fs-2 fw-semibold">@Model.NoShowPct30d.ToString("0.0")%</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Pacientes activos</div><div class="fs-2 fw-semibold">@Model.Kpis.PacientesActivos</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Médicos activos</div><div class="fs-2 fw-semibold">@Model.Kpis.MedicosActivos</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted">Citas hoy</div><div class="fs-2 fw-semibold">@Model.Kpis.CitasHoy</div></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted">No se presentó (30 días)</div><div class="fs-2 fw-semibold">@Model.Kpis.NoShowPct30d.ToString("0.0")%</div></div></div>
 </div>
 
 <div class="row g-3">
@@ -35,38 +33,84 @@
     </div>
 </div>
 
-
 <div class="row g-3 mt-2">
     <div class="col-lg-7">
-        <!-- tus gráficos -->
+        <div class="card p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h5 class="mb-3">Citas programadas para hoy</h5>
+                <a asp-controller="Citas" asp-action="Listado" class="btn btn-sm btn-outline-secondary">Ver todo</a>
+            </div>
+            @if (Model.CitasHoy?.Any() == true)
+            {
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th style="width:80px">Hora</th>
+                            <th>Doctor</th>
+                            <th>Especialidad</th>
+                            <th>Paciente</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model.CitasHoy)
+                        {
+                            <tr>
+                                <td>@c.Hora</td>
+                                <td>@c.Doctor</td>
+                                <td>@c.Especialidad</td>
+                                <td>@c.Paciente</td>
+                                <td>@c.Estado</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="text-muted">No hay citas programadas para hoy.</div>
+            }
+        </div>
     </div>
-    <div class="col-lg-">
+
+    <div class="col-lg-5">
         @await Html.PartialAsync("_ActividadMedicos", Model.ActividadMedicos)
     </div>
 </div>
 
 @section Scripts {
     <script>
-        const labelsSem = @Html.Raw(JsonSerializer.Serialize(Model.LabelsSemanas));
-        const seriesEsp = @Html.Raw(JsonSerializer.Serialize(Model.CitasPorEspecialidad));
-        const labelsMes = @Html.Raw(JsonSerializer.Serialize(Model.LabelsMeses));
-        const altas     = @Html.Raw(JsonSerializer.Serialize(Model.Altas));
-        const bajas     = @Html.Raw(JsonSerializer.Serialize(Model.Bajas));
+        // ===== Datos para gráficos desde el VM =====
+        const labelsSem = @Html.Raw(JsonSerializer.Serialize(Model.Especialidades.LabelsSemanas));
+        const seriesEsp = @Html.Raw(JsonSerializer.Serialize(
+                    Model.Especialidades.Series.Select(s => new { label = s.Label, data = s.Data })
+            ));
+    const labelsMes = @Html.Raw(JsonSerializer.Serialize(Model.AltasBajas.LabelsMeses));
+    const altas     = @Html.Raw(JsonSerializer.Serialize(Model.AltasBajas.Altas));
+    const bajas     = @Html.Raw(JsonSerializer.Serialize(Model.AltasBajas.Bajas));
 
+        // Stacked por especialidad
         new Chart(document.getElementById('chartEsp'), {
-          type: 'bar',
-          data: { labels: labelsSem, datasets: seriesEsp.map(s => ({ label: s.label, data: s.data })) },
-          options: { responsive:true, plugins:{ legend:{ position:'bottom' } }, scales:{ x:{ stacked:true }, y:{ stacked:true, beginAtZero:true } } }
+            type: 'bar',
+            data: { labels: labelsSem, datasets: seriesEsp },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } }
+            }
         });
 
+        // Altas vs Bajas (líneas)
         new Chart(document.getElementById('chartAltasBajas'), {
-          type: 'line',
-          data: { labels: labelsMes, datasets:[
-            { label:'Altas', data: altas, tension:.3 },
-            { label:'Bajas', data: bajas, tension:.3 }
-          ]},
-          options: { responsive:true, plugins:{ legend:{ position:'bottom' } } }
+            type: 'line',
+            data: {
+                labels: labelsMes,
+                datasets: [
+                    { label: 'Altas', data: altas, tension: .3 },
+                    { label: 'Bajas', data: bajas, tension: .3 }
+                ]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
         });
     </script>
-
 }
